@@ -1,0 +1,188 @@
+{
+ "materi": {
+  "slug": "studi-kasus-minimarket",
+  "kategori": "Studi Kasus",
+  "urutan": 265,
+  "judul": "Studi Kasus: Minimarket",
+  "ringkasan": "Latihan gabungan SELECT, JOIN, GROUP BY, dan subquery di data jaringan minimarket.",
+  "isi": "Saatnya memakai semua yang sudah kamu pelajari di data yang berbeda. Di studi kasus ini kamu bekerja untuk **jaringan minimarket fiktif** yang punya 6 cabang di Jakarta, Bogor, Depok, Bandung, dan Tangerang. Datanya buatan, mencakup transaksi Januari sampai Februari 2026.\n\nNama tabelnya berawalan `ms_` (*master*, data induk) dan `tr_` (*transaksi*), seperti yang sering dipakai di perusahaan.\n\n## Tabel-tabelnya\n\n| Tabel | Isi | Kolom penting |\n|---|---|---|\n| `ms_propinsi` | Propinsi | `kode_propinsi`, `nama_propinsi` |\n| `ms_kota` | Kota | `kode_kota`, `nama_kota`, `kode_propinsi` |\n| `ms_cabang` | Cabang minimarket | `kode_cabang`, `nama_cabang`, `kode_kota` |\n| `ms_karyawan` | Karyawan / kasir | `kode_karyawan`, `kode_cabang`, `nama_depan`, `nama_belakang`, `jenis_kelamin` |\n| `ms_kategori` | Kategori produk | `kode_kategori`, `nama_kategori` |\n| `ms_produk` | Produk | `kode_produk`, `kode_item`, `kode_kategori`, `nama_produk`, `unit`, `kode_satuan` |\n| `ms_harga_harian` | Harga tiap produk per cabang | `kode_produk`, `kode_cabang`, `tgl_berlaku`, `harga_berlaku_cabang`, `modal_cabang`, `biaya_cabang` |\n| `tr_penjualan` | Barang yang terjual | `tgl_transaksi`, `kode_cabang`, `kode_kasir`, `kode_produk`, `jumlah_pembelian` |\n\n## Cara tabel saling terhubung\n\n- Wilayah bertingkat: `ms_cabang.kode_kota` → `ms_kota`, lalu `ms_kota.kode_propinsi` → `ms_propinsi`.\n- `tr_penjualan.kode_kasir` menunjuk ke `ms_karyawan.kode_karyawan`. Nama kolomnya **berbeda**, jadi perhatikan saat menulis `ON`.\n- `ms_produk.kode_item` bisa sama untuk beberapa produk: misalnya air mineral botol dan air mineral satu dus. `kode_produk` yang membedakannya.\n- Harga tidak disimpan di `ms_produk`, tetapi di `ms_harga_harian`. Harga bisa berbeda tiap cabang dan bisa berubah: baris dengan `tgl_berlaku` terbaru yang tidak melewati tanggal transaksi adalah harga yang berlaku.\n\n## Coba lihat sendiri\n\n```sql\nSELECT * FROM ms_cabang;\n```\n\n```sql\nSELECT * FROM tr_penjualan ORDER BY tgl_transaksi LIMIT 10;\n```\n\nContoh di bawah menampilkan riwayat harga satu produk di satu cabang. Perhatikan dua baris dengan `tgl_berlaku` berbeda:\n\n```sql\nSELECT tgl_berlaku, harga_berlaku_cabang, modal_cabang\nFROM ms_harga_harian\nWHERE kode_produk = 'PROD-0000008' AND kode_cabang = 'CABANG-003';\n```\n\n> Studi kasus ini menggabungkan beberapa konsep sekaligus. Kalau buntu, buka lagi materi terkait (WHERE, JOIN, GROUP BY, subquery) atau minta hint.",
+  "latihan": [
+   {
+    "level": "Dasar",
+    "xp": 10,
+    "judul": "Daftar cabang",
+    "konsep": "SELECT kolom",
+    "teks": "Manajer area ingin melihat semua cabang. Tampilkan `kode_cabang` dan `nama_cabang` dari tabel `ms_cabang`.",
+    "kunci": "SELECT kode_cabang, nama_cabang FROM ms_cabang;",
+    "hints": [
+     "Pilih dua kolom saja, bukan semua kolom.",
+     "Pisahkan nama kolom dengan koma.",
+     "SELECT kode_cabang, nama_cabang FROM …"
+    ]
+   },
+   {
+    "level": "Dasar",
+    "xp": 10,
+    "judul": "Produk kategori minuman",
+    "konsep": "WHERE",
+    "teks": "Tampilkan `kode_produk`, `nama_produk`, dan `kode_satuan` untuk produk berkategori minuman, yaitu `kode_kategori` = `'KAT-002'`.",
+    "kunci": "SELECT kode_produk, nama_produk, kode_satuan FROM ms_produk WHERE kode_kategori = 'KAT-002';",
+    "hints": [
+     "Data produk ada di tabel ms_produk.",
+     "Saring baris dengan WHERE. Teks ditulis di antara petik tunggal.",
+     "WHERE kode_kategori = 'KAT-002'"
+    ]
+   },
+   {
+    "level": "Dasar",
+    "xp": 10,
+    "judul": "Karyawan perempuan",
+    "konsep": "WHERE + ORDER BY",
+    "urut": true,
+    "teks": "Tampilkan `nama_depan` dan `nama_belakang` karyawan perempuan (`jenis_kelamin` = `'P'`), diurutkan berdasarkan nama depan dari A ke Z.",
+    "kunci": "SELECT nama_depan, nama_belakang FROM ms_karyawan WHERE jenis_kelamin = 'P' ORDER BY nama_depan;",
+    "hints": [
+     "Data karyawan ada di ms_karyawan.",
+     "Urutan klausa: SELECT … FROM … WHERE … ORDER BY …",
+     "WHERE jenis_kelamin = 'P' ORDER BY nama_depan"
+    ]
+   },
+   {
+    "level": "Dasar",
+    "xp": 10,
+    "judul": "Produk kemasan dus",
+    "konsep": "WHERE",
+    "teks": "Beberapa produk dijual per dus. Tampilkan `nama_produk` dan `unit` (jumlah isi per kemasan) untuk produk dengan `kode_satuan` = `'DUS'`.",
+    "kunci": "SELECT nama_produk, unit FROM ms_produk WHERE kode_satuan = 'DUS';",
+    "hints": [
+     "Kolom kode_satuan berisi PCS, BTL, DUS, dan seterusnya.",
+     "Saring dengan WHERE kode_satuan = …",
+     "SELECT nama_produk, unit FROM ms_produk WHERE kode_satuan = 'DUS';"
+    ]
+   },
+   {
+    "level": "Menengah",
+    "xp": 20,
+    "judul": "Nama lengkap karyawan",
+    "konsep": "CONCAT + alias",
+    "nama_kolom": true,
+    "teks": "Untuk papan nama, gabungkan nama depan dan nama belakang karyawan dengan satu spasi di tengah. Beberapa karyawan tidak punya nama belakang (NULL); untuk mereka, `nama_lengkap` cukup berisi nama depan saja. Tampilkan kolom `nama_lengkap` dan `kode_cabang` untuk semua karyawan.",
+    "kunci": "SELECT CONCAT_WS(' ', nama_depan, nama_belakang) AS nama_lengkap, kode_cabang FROM ms_karyawan;",
+    "hints": [
+     "Fungsi CONCAT(a, b, c) menggabungkan teks, tetapi hasilnya NULL jika salah satu bagiannya NULL.",
+     "CONCAT_WS(pemisah, a, b) menggabungkan dengan pemisah dan melewati bagian yang NULL.",
+     "CONCAT_WS(' ', nama_depan, nama_belakang) AS nama_lengkap"
+    ]
+   },
+   {
+    "level": "Menengah",
+    "xp": 20,
+    "judul": "Cabang dan kotanya",
+    "konsep": "INNER JOIN",
+    "teks": "Tampilkan `nama_cabang` dan `nama_kota` untuk setiap cabang.",
+    "kunci": "SELECT c.nama_cabang, k.nama_kota FROM ms_cabang c JOIN ms_kota k ON k.kode_kota = c.kode_kota;",
+    "hints": [
+     "Nama kota tidak ada di ms_cabang, tetapi di ms_kota.",
+     "Gabungkan kedua tabel lewat kolom kode_kota.",
+     "FROM ms_cabang c JOIN ms_kota k ON k.kode_kota = c.kode_kota"
+    ]
+   },
+   {
+    "level": "Menengah",
+    "xp": 20,
+    "judul": "Jumlah transaksi per cabang",
+    "konsep": "GROUP BY + COUNT",
+    "nama_kolom": true,
+    "teks": "Hitung banyaknya baris penjualan di setiap cabang. Tampilkan `kode_cabang` dan `jumlah_transaksi`.",
+    "kunci": "SELECT kode_cabang, COUNT(*) AS jumlah_transaksi FROM tr_penjualan GROUP BY kode_cabang;",
+    "hints": [
+     "COUNT(*) menghitung jumlah baris.",
+     "Agar dihitung per cabang, kelompokkan dengan GROUP BY kode_cabang.",
+     "Beri nama kolom hasil dengan AS jumlah_transaksi."
+    ]
+   },
+   {
+    "level": "Menengah",
+    "xp": 20,
+    "judul": "Produk yang pernah naik harga",
+    "konsep": "GROUP BY + HAVING",
+    "teks": "Harga beberapa produk naik di tengah periode, sehingga produk itu punya lebih dari satu `tgl_berlaku` di `ms_harga_harian`. Tampilkan `kode_produk` dan `nama_produk` yang punya **lebih dari satu** tanggal berlaku yang berbeda.",
+    "kunci": "SELECT p.kode_produk, p.nama_produk FROM ms_produk p JOIN ms_harga_harian h ON h.kode_produk = p.kode_produk GROUP BY p.kode_produk, p.nama_produk HAVING COUNT(DISTINCT h.tgl_berlaku) > 1;",
+    "hints": [
+     "Hitung tanggal berlaku per produk dengan COUNT(DISTINCT tgl_berlaku).",
+     "Syarat setelah pengelompokan ditulis di HAVING, bukan WHERE.",
+     "… GROUP BY p.kode_produk, p.nama_produk HAVING COUNT(DISTINCT h.tgl_berlaku) > 1"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Lima produk terlaris",
+    "konsep": "JOIN + GROUP BY + LIMIT",
+    "urut": true,
+    "nama_kolom": true,
+    "teks": "Tampilkan 5 produk dengan jumlah barang terjual terbanyak. Kolomnya `nama_produk` dan `total_terjual` (jumlah dari `jumlah_pembelian`), urut dari yang terbanyak. Jika `total_terjual` sama, urutkan berdasarkan `nama_produk` dari A ke Z.",
+    "kunci": "SELECT p.nama_produk, SUM(t.jumlah_pembelian) AS total_terjual FROM tr_penjualan t JOIN ms_produk p ON p.kode_produk = t.kode_produk GROUP BY p.kode_produk, p.nama_produk ORDER BY total_terjual DESC, p.nama_produk LIMIT 5;",
+    "hints": [
+     "Jumlahkan jumlah_pembelian per produk dengan SUM dan GROUP BY.",
+     "Nama produk ada di ms_produk, jadi JOIN lewat kode_produk.",
+     "… ORDER BY total_terjual DESC, p.nama_produk LIMIT 5"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Kota tanpa cabang",
+    "konsep": "LEFT JOIN … IS NULL",
+    "teks": "Tim ekspansi mencari kota yang **belum** punya cabang. Tampilkan `nama_kota` dari kota-kota tersebut.",
+    "kunci": "SELECT k.nama_kota FROM ms_kota k LEFT JOIN ms_cabang c ON c.kode_kota = k.kode_kota WHERE c.kode_cabang IS NULL;",
+    "hints": [
+     "INNER JOIN membuang kota yang tidak punya pasangan. Kamu justru butuh kota itu.",
+     "LEFT JOIN mempertahankan semua kota; yang tidak punya cabang bernilai NULL di kolom cabang.",
+     "… LEFT JOIN ms_cabang c ON c.kode_kota = k.kode_kota WHERE c.kode_cabang IS NULL"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Karyawan yang belum pernah jadi kasir",
+    "konsep": "NOT IN / LEFT JOIN",
+    "teks": "Tampilkan `kode_karyawan`, `nama_depan`, dan `kode_cabang` karyawan yang **tidak pernah** tercatat sebagai kasir di `tr_penjualan`.",
+    "kunci": "SELECT kode_karyawan, nama_depan, kode_cabang FROM ms_karyawan WHERE kode_karyawan NOT IN (SELECT kode_kasir FROM tr_penjualan);",
+    "hints": [
+     "Kasir di tr_penjualan disimpan di kolom kode_kasir, yang berisi kode_karyawan.",
+     "Ambil dulu semua kode_kasir dengan subquery, lalu cari karyawan yang tidak ada di situ.",
+     "WHERE kode_karyawan NOT IN (SELECT kode_kasir FROM tr_penjualan)"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Barang terjual per propinsi",
+    "konsep": "JOIN banyak tabel + GROUP BY",
+    "nama_kolom": true,
+    "teks": "Tampilkan `nama_propinsi` dan `total_barang` (jumlah seluruh `jumlah_pembelian`) untuk setiap propinsi yang punya penjualan.",
+    "kunci": "SELECT pr.nama_propinsi, SUM(t.jumlah_pembelian) AS total_barang FROM tr_penjualan t JOIN ms_cabang c ON c.kode_cabang = t.kode_cabang JOIN ms_kota k ON k.kode_kota = c.kode_kota JOIN ms_propinsi pr ON pr.kode_propinsi = k.kode_propinsi GROUP BY pr.nama_propinsi;",
+    "hints": [
+     "Jalur datanya: tr_penjualan → ms_cabang → ms_kota → ms_propinsi.",
+     "Tiga JOIN berurutan, masing-masing lewat kode_cabang, kode_kota, lalu kode_propinsi.",
+     "… GROUP BY pr.nama_propinsi dengan SUM(t.jumlah_pembelian) AS total_barang"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Omzet per cabang",
+    "konsep": "Subquery berkorelasi",
+    "nama_kolom": true,
+    "teks": "Hitung omzet (jumlah × harga) setiap cabang. Harga yang dipakai adalah harga **yang berlaku saat transaksi**, yaitu baris `ms_harga_harian` untuk produk dan cabang yang sama dengan `tgl_berlaku` terbaru yang tidak melewati `tgl_transaksi`. Tampilkan `nama_cabang` dan `omzet`.",
+    "kunci": "SELECT c.nama_cabang, SUM(t.jumlah_pembelian * h.harga_berlaku_cabang) AS omzet FROM tr_penjualan t JOIN ms_cabang c ON c.kode_cabang = t.kode_cabang JOIN ms_harga_harian h ON h.kode_produk = t.kode_produk AND h.kode_cabang = t.kode_cabang AND h.tgl_berlaku = (SELECT MAX(h2.tgl_berlaku) FROM ms_harga_harian h2 WHERE h2.kode_produk = t.kode_produk AND h2.kode_cabang = t.kode_cabang AND h2.tgl_berlaku <= t.tgl_transaksi) GROUP BY c.nama_cabang;",
+    "hints": [
+     "JOIN tr_penjualan ke ms_harga_harian lewat kode_produk DAN kode_cabang. Tapi satu produk bisa punya dua harga.",
+     "Pilih harga dengan subquery: SELECT MAX(h2.tgl_berlaku) … WHERE h2.tgl_berlaku <= t.tgl_transaksi untuk produk & cabang yang sama.",
+     "Kalikan jumlah_pembelian dengan harga_berlaku_cabang, lalu SUM per nama_cabang."
+    ]
+   }
+  ]
+ }
+}

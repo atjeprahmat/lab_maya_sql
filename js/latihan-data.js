@@ -1,0 +1,876 @@
+// Dibangkitkan oleh materi_soal/bangun.js dari latihan-minimarket.json dan studi-kasus-minimarket.json. Jangan diedit langsung.
+window.LATIHAN_DATA = {
+ "latihan": {
+  "select-from": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Semua kategori",
+   "mode": "select",
+   "teks": "Di database **Minimarket**, tampilkan semua kolom dari tabel `ms_kategori`.",
+   "kunci": "SELECT * FROM ms_kategori;",
+   "hints": [
+    "Tanda * berarti semua kolom.",
+    "Polanya: SELECT * FROM nama_tabel;",
+    "Nama tabelnya ms_kategori."
+   ]
+  },
+  "select-tanpa-tabel": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Harga setelah diskon",
+   "mode": "select",
+   "nama_kolom": true,
+   "teks": "Beras Pulen 5 kg dijual Rp74.000 dan sedang diskon **15%**. Hitung harga setelah diskon **tanpa memakai tabel**, beri nama kolom hasilnya `harga_diskon`.",
+   "kunci": "SELECT 74000 * 0.85 AS harga_diskon;",
+   "hints": [
+    "SELECT bisa dipakai seperti kalkulator, tanpa FROM.",
+    "Harga setelah diskon 15% = harga × 85%, atau harga − harga × 15 / 100.",
+    "SELECT 74000 * 0.85 AS harga_diskon;"
+   ]
+  },
+  "order-by": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Karyawan per cabang",
+   "mode": "select",
+   "urut": true,
+   "teks": "Tampilkan `kode_cabang`, `nama_depan`, dan `nama_belakang` semua karyawan, diurutkan berdasarkan `kode_cabang`, lalu `nama_depan` dari A ke Z.",
+   "kunci": "SELECT kode_cabang, nama_depan, nama_belakang FROM ms_karyawan ORDER BY kode_cabang, nama_depan;",
+   "hints": [
+    "Data karyawan ada di ms_karyawan.",
+    "ORDER BY boleh berisi lebih dari satu kolom, dipisah koma.",
+    "ORDER BY kode_cabang, nama_depan"
+   ]
+  },
+  "where": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Pembelian dalam jumlah besar",
+   "mode": "select",
+   "teks": "Tampilkan `tgl_transaksi`, `kode_cabang`, `kode_produk`, dan `jumlah_pembelian` dari penjualan yang `jumlah_pembelian`-nya **4 atau lebih**.",
+   "kunci": "SELECT tgl_transaksi, kode_cabang, kode_produk, jumlah_pembelian FROM tr_penjualan WHERE jumlah_pembelian >= 4;",
+   "hints": [
+    "Data penjualan ada di tr_penjualan.",
+    "4 atau lebih ditulis dengan operator >=.",
+    "WHERE jumlah_pembelian >= 4"
+   ]
+  },
+  "select-distinct": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Produk yang pernah terjual",
+   "mode": "select",
+   "teks": "Tampilkan daftar `kode_produk` yang pernah terjual di `tr_penjualan`, **tanpa** kode yang berulang.",
+   "kunci": "SELECT DISTINCT kode_produk FROM tr_penjualan;",
+   "hints": [
+    "Satu produk bisa terjual berkali-kali, jadi kodenya muncul berulang.",
+    "DISTINCT menghapus baris yang kembar.",
+    "SELECT DISTINCT kode_produk FROM tr_penjualan;"
+   ]
+  },
+  "and-or": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Karyawan laki-laki di Tajur atau Margonda",
+   "mode": "select",
+   "teks": "Tampilkan `nama_depan` dan `kode_cabang` karyawan **laki-laki** (`jenis_kelamin` = `'L'`) yang bekerja di cabang `CABANG-003` **atau** `CABANG-004`.",
+   "kunci": "SELECT nama_depan, kode_cabang FROM ms_karyawan WHERE jenis_kelamin = 'L' AND (kode_cabang = 'CABANG-003' OR kode_cabang = 'CABANG-004');",
+   "hints": [
+    "Ada dua syarat yang harus terpenuhi bersamaan: jenis kelamin DAN cabang.",
+    "Syarat cabangnya sendiri berupa pilihan: CABANG-003 ATAU CABANG-004. Bungkus dengan tanda kurung.",
+    "WHERE jenis_kelamin = 'L' AND (kode_cabang = 'CABANG-003' OR kode_cabang = 'CABANG-004')"
+   ]
+  },
+  "in-not-in": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Produk minuman dan sembako",
+   "mode": "select",
+   "teks": "Tampilkan `nama_produk` dan `kode_kategori` produk yang kategorinya `KAT-002` (Minuman) atau `KAT-003` (Sembako). Gunakan `IN`.",
+   "kunci": "SELECT nama_produk, kode_kategori FROM ms_produk WHERE kode_kategori IN ('KAT-002', 'KAT-003');",
+   "hints": [
+    "IN mencocokkan nilai dengan beberapa pilihan sekaligus.",
+    "Isi daftar IN ditulis di dalam kurung, dipisah koma.",
+    "WHERE kode_kategori IN ('KAT-002', 'KAT-003')"
+   ]
+  },
+  "between": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Penjualan pekan pertama Februari",
+   "mode": "select",
+   "teks": "Tampilkan `tgl_transaksi`, `kode_cabang`, dan `kode_produk` dari penjualan **1 sampai 7 Februari 2026** (tanggal 7 ikut dihitung sampai akhir hari). Gunakan `BETWEEN`.",
+   "kunci": "SELECT tgl_transaksi, kode_cabang, kode_produk FROM tr_penjualan WHERE tgl_transaksi BETWEEN '2026-02-01' AND '2026-02-07 23:59:59';",
+   "hints": [
+    "BETWEEN a AND b mengambil nilai dari a sampai b, termasuk ujungnya.",
+    "Kolom tgl_transaksi berisi tanggal DAN jam. '2026-02-07' berarti tanggal 7 jam 00:00, jadi transaksi siang hari tanggal 7 tidak ikut.",
+    "BETWEEN '2026-02-01' AND '2026-02-07 23:59:59'"
+   ]
+  },
+  "like": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Produk berukuran mililiter",
+   "mode": "select",
+   "teks": "Tampilkan `nama_produk` yang namanya mengandung kata `ml` (mililiter).",
+   "kunci": "SELECT nama_produk FROM ms_produk WHERE nama_produk LIKE '%ml%';",
+   "hints": [
+    "Untuk mencari pola teks, gunakan LIKE.",
+    "% mewakili teks apa saja, di depan maupun di belakang.",
+    "WHERE nama_produk LIKE '%ml%'"
+   ]
+  },
+  "limit": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Tiga penjualan pertama",
+   "mode": "select",
+   "urut": true,
+   "teks": "Tampilkan `tgl_transaksi`, `kode_cabang`, dan `kode_produk` dari **3** penjualan paling awal.",
+   "kunci": "SELECT tgl_transaksi, kode_cabang, kode_produk FROM tr_penjualan ORDER BY tgl_transaksi LIMIT 3;",
+   "hints": [
+    "Urutkan dulu dari waktu paling awal.",
+    "LIMIT membatasi jumlah baris yang ditampilkan dan ditulis paling akhir.",
+    "ORDER BY tgl_transaksi LIMIT 3"
+   ]
+  },
+  "is-null": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Karyawan tanpa nama belakang",
+   "mode": "select",
+   "teks": "Beberapa karyawan hanya punya satu nama, sehingga `nama_belakang`-nya kosong (NULL). Tampilkan `kode_karyawan` dan `nama_depan` mereka.",
+   "kunci": "SELECT kode_karyawan, nama_depan FROM ms_karyawan WHERE nama_belakang IS NULL;",
+   "hints": [
+    "NULL tidak bisa dibandingkan dengan tanda =.",
+    "Gunakan IS NULL untuk mengecek nilai kosong.",
+    "WHERE nama_belakang IS NULL"
+   ]
+  },
+  "alias": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Alias kolom",
+   "mode": "select",
+   "nama_kolom": true,
+   "teks": "Tampilkan `nama_depan` dengan nama kolom `nama` dan `kode_cabang` dengan nama kolom `cabang` dari tabel `ms_karyawan`. Beri tabelnya alias `k`.",
+   "kunci": "SELECT k.nama_depan AS nama, k.kode_cabang AS cabang FROM ms_karyawan AS k;",
+   "hints": [
+    "Alias kolom ditulis dengan AS setelah nama kolom.",
+    "Alias tabel ditulis setelah nama tabel: FROM ms_karyawan AS k.",
+    "SELECT k.nama_depan AS nama, k.kode_cabang AS cabang FROM ms_karyawan AS k;"
+   ]
+  },
+  "inner-join": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Produk beserta kategorinya",
+   "mode": "select",
+   "teks": "Tampilkan `nama_produk` dan `nama_kategori` setiap produk.",
+   "kunci": "SELECT p.nama_produk, k.nama_kategori FROM ms_produk p JOIN ms_kategori k ON k.kode_kategori = p.kode_kategori;",
+   "hints": [
+    "Nama kategori ada di tabel ms_kategori.",
+    "Hubungkan kedua tabel lewat kolom kode_kategori.",
+    "FROM ms_produk p JOIN ms_kategori k ON k.kode_kategori = p.kode_kategori"
+   ]
+  },
+  "left-join": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Semua kategori dan produknya",
+   "mode": "select",
+   "teks": "Tampilkan `nama_kategori` dan `nama_produk` untuk **semua** kategori, termasuk kategori yang belum punya produk (produknya tampil NULL).",
+   "kunci": "SELECT k.nama_kategori, p.nama_produk FROM ms_kategori k LEFT JOIN ms_produk p ON p.kode_kategori = k.kode_kategori;",
+   "hints": [
+    "INNER JOIN membuang kategori tanpa produk.",
+    "LEFT JOIN mempertahankan semua baris dari tabel kiri.",
+    "FROM ms_kategori k LEFT JOIN ms_produk p ON p.kode_kategori = k.kode_kategori"
+   ]
+  },
+  "right-join": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Semua kota dan cabangnya",
+   "mode": "select",
+   "teks": "Tampilkan `nama_kota` dan `nama_cabang` untuk **semua kota**, termasuk kota yang belum punya cabang. Mulai dari `ms_cabang`, lalu gunakan `RIGHT JOIN` ke `ms_kota`.",
+   "kunci": "SELECT k.nama_kota, c.nama_cabang FROM ms_cabang c RIGHT JOIN ms_kota k ON k.kode_kota = c.kode_kota;",
+   "hints": [
+    "RIGHT JOIN mempertahankan semua baris dari tabel kanan, yaitu tabel setelah kata JOIN.",
+    "Tabel kanannya ms_kota, karena semua kota harus tampil.",
+    "FROM ms_cabang c RIGHT JOIN ms_kota k ON k.kode_kota = c.kode_kota"
+   ]
+  },
+  "self-join": {
+   "level": "Lanjut",
+   "xp": 30,
+   "judul": "Rekan satu cabang",
+   "mode": "select",
+   "teks": "Tampilkan pasangan karyawan yang bekerja di **cabang yang sama**: kolom `kode_cabang`, nama depan karyawan pertama, dan nama depan karyawan kedua. Setiap pasangan cukup muncul **sekali**, dan karyawan tidak dipasangkan dengan dirinya sendiri. Gunakan aturan: kode karyawan pertama lebih kecil dari kode karyawan kedua.",
+   "kunci": "SELECT a.kode_cabang, a.nama_depan, b.nama_depan FROM ms_karyawan a JOIN ms_karyawan b ON a.kode_cabang = b.kode_cabang AND a.kode_karyawan < b.kode_karyawan;",
+   "hints": [
+    "Self-join: tabel yang sama dipakai dua kali dengan alias berbeda, misalnya a dan b.",
+    "Pasangan harus satu cabang: a.kode_cabang = b.kode_cabang.",
+    "Tambahkan a.kode_karyawan < b.kode_karyawan agar tidak ada pasangan dengan diri sendiri dan tidak ada pasangan terbalik."
+   ]
+  },
+  "cross-join": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Rak kategori di setiap cabang",
+   "mode": "select",
+   "teks": "Setiap cabang akan menyiapkan satu rak untuk setiap kategori. Tampilkan semua kombinasi `nama_cabang` dan `nama_kategori`.",
+   "kunci": "SELECT c.nama_cabang, k.nama_kategori FROM ms_cabang c CROSS JOIN ms_kategori k;",
+   "hints": [
+    "Semua kombinasi dua tabel disebut perkalian kartesius.",
+    "CROSS JOIN tidak memakai ON.",
+    "FROM ms_cabang c CROSS JOIN ms_kategori k"
+   ]
+  },
+  "group-by": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Barang terjual per cabang",
+   "mode": "select",
+   "nama_kolom": true,
+   "teks": "Hitung total barang terjual (jumlah `jumlah_pembelian`) di setiap cabang. Tampilkan `kode_cabang` dan `total_barang`.",
+   "kunci": "SELECT kode_cabang, SUM(jumlah_pembelian) AS total_barang FROM tr_penjualan GROUP BY kode_cabang;",
+   "hints": [
+    "SUM menjumlahkan nilai sebuah kolom.",
+    "Agar dijumlahkan per cabang, kelompokkan dengan GROUP BY kode_cabang.",
+    "SELECT kode_cabang, SUM(jumlah_pembelian) AS total_barang … GROUP BY kode_cabang"
+   ]
+  },
+  "having": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Cabang paling laris",
+   "mode": "select",
+   "nama_kolom": true,
+   "teks": "Tampilkan `kode_cabang` dan `total_barang` (jumlah `jumlah_pembelian`) hanya untuk cabang yang total barang terjualnya **lebih dari 80**.",
+   "kunci": "SELECT kode_cabang, SUM(jumlah_pembelian) AS total_barang FROM tr_penjualan GROUP BY kode_cabang HAVING SUM(jumlah_pembelian) > 80;",
+   "hints": [
+    "Hitung dulu total per cabang dengan GROUP BY.",
+    "Syarat pada hasil penjumlahan ditulis di HAVING, bukan WHERE.",
+    "… GROUP BY kode_cabang HAVING SUM(jumlah_pembelian) > 80"
+   ]
+  },
+  "having-count": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Produk yang sering terjual",
+   "mode": "select",
+   "nama_kolom": true,
+   "teks": "Tampilkan `kode_produk` dan `kali_terjual` (banyaknya baris penjualan) untuk produk yang terjual **14 kali atau lebih**.",
+   "kunci": "SELECT kode_produk, COUNT(*) AS kali_terjual FROM tr_penjualan GROUP BY kode_produk HAVING COUNT(*) >= 14;",
+   "hints": [
+    "COUNT(*) menghitung banyaknya baris per kelompok.",
+    "Kelompokkan per kode_produk.",
+    "… GROUP BY kode_produk HAVING COUNT(*) >= 14"
+   ]
+  },
+  "rollup": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Total per cabang dan totalnya",
+   "mode": "select",
+   "nama_kolom": true,
+   "teks": "Hitung `total_barang` (jumlah `jumlah_pembelian`) per `kode_cabang`, dan tambahkan satu baris **total keseluruhan** memakai `WITH ROLLUP`.",
+   "kunci": "SELECT kode_cabang, SUM(jumlah_pembelian) AS total_barang FROM tr_penjualan GROUP BY kode_cabang WITH ROLLUP;",
+   "hints": [
+    "Mulai dari query total per cabang dengan GROUP BY.",
+    "WITH ROLLUP ditulis tepat setelah GROUP BY.",
+    "… GROUP BY kode_cabang WITH ROLLUP"
+   ]
+  },
+  "subquery": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Pembelian di atas rata-rata",
+   "mode": "select",
+   "teks": "Tampilkan `tgl_transaksi`, `kode_produk`, dan `jumlah_pembelian` dari penjualan yang jumlahnya **di atas rata-rata** seluruh `jumlah_pembelian`.",
+   "kunci": "SELECT tgl_transaksi, kode_produk, jumlah_pembelian FROM tr_penjualan WHERE jumlah_pembelian > (SELECT AVG(jumlah_pembelian) FROM tr_penjualan);",
+   "hints": [
+    "Hitung rata-ratanya dulu: SELECT AVG(jumlah_pembelian) FROM tr_penjualan.",
+    "Query rata-rata itu bisa ditaruh di dalam WHERE, diapit tanda kurung.",
+    "WHERE jumlah_pembelian > (SELECT AVG(jumlah_pembelian) FROM tr_penjualan)"
+   ]
+  },
+  "derived-table": {
+   "level": "Lanjut",
+   "xp": 30,
+   "judul": "Rata-rata barang per cabang",
+   "mode": "select",
+   "nama_kolom": true,
+   "teks": "Hitung **rata-rata** dari total barang terjual per cabang. Caranya: buat dulu tabel turunan berisi total barang setiap cabang, lalu hitung rata-ratanya. Beri nama kolom hasilnya `rata_rata`.",
+   "kunci": "SELECT AVG(total) AS rata_rata FROM (SELECT kode_cabang, SUM(jumlah_pembelian) AS total FROM tr_penjualan GROUP BY kode_cabang) AS t;",
+   "hints": [
+    "Query di dalam FROM disebut derived table dan wajib diberi alias.",
+    "Isi derived table-nya: total barang per cabang (SUM … GROUP BY kode_cabang).",
+    "SELECT AVG(total) AS rata_rata FROM (SELECT … AS total … GROUP BY kode_cabang) AS t"
+   ]
+  },
+  "exists": {
+   "level": "Lanjut",
+   "xp": 30,
+   "judul": "Kategori yang pernah terjual",
+   "mode": "select",
+   "teks": "Tampilkan `nama_kategori` yang **punya minimal satu produk yang pernah terjual**. Gunakan `EXISTS`.",
+   "kunci": "SELECT k.nama_kategori FROM ms_kategori k WHERE EXISTS (SELECT 1 FROM ms_produk p JOIN tr_penjualan t ON t.kode_produk = p.kode_produk WHERE p.kode_kategori = k.kode_kategori);",
+   "hints": [
+    "EXISTS bernilai benar jika subquery-nya menghasilkan minimal satu baris.",
+    "Subquery-nya mencari penjualan produk yang kategorinya sama dengan kategori di query luar.",
+    "WHERE EXISTS (SELECT 1 FROM ms_produk p JOIN tr_penjualan t ON … WHERE p.kode_kategori = k.kode_kategori)"
+   ]
+  },
+  "union-except-intersect": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Daftar nama wilayah",
+   "mode": "select",
+   "teks": "Buat satu daftar berisi semua `nama_kota` dari `ms_kota` **dan** semua `nama_propinsi` dari `ms_propinsi`, dalam satu kolom. Gunakan `UNION`.",
+   "kunci": "SELECT nama_kota FROM ms_kota UNION SELECT nama_propinsi FROM ms_propinsi;",
+   "hints": [
+    "UNION menumpuk hasil dua SELECT secara vertikal.",
+    "Kedua SELECT harus punya jumlah kolom yang sama.",
+    "SELECT nama_kota FROM ms_kota UNION SELECT nama_propinsi FROM ms_propinsi;"
+   ]
+  },
+  "create-table": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Tabel promo",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Buat tabel `promo` dengan kolom berikut, urut seperti ini:\n\n| Kolom | Tipe | Aturan |\n|---|---|---|\n| `kode_promo` | VARCHAR(10) | PRIMARY KEY |\n| `kode_produk` | VARCHAR(12) | NOT NULL |\n| `diskon_persen` | INT | NOT NULL |\n| `mulai` | DATE | boleh kosong |\n| `selesai` | DATE | boleh kosong |",
+   "kunci": "CREATE TABLE promo (kode_promo VARCHAR(10) PRIMARY KEY, kode_produk VARCHAR(12) NOT NULL, diskon_persen INT NOT NULL, mulai DATE, selesai DATE);",
+   "cek": "SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_KEY FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'promo' ORDER BY ORDINAL_POSITION",
+   "hints": [
+    "Polanya: CREATE TABLE nama (kolom tipe aturan, …);",
+    "PRIMARY KEY dan NOT NULL ditulis setelah tipe kolom.",
+    "CREATE TABLE promo (kode_promo VARCHAR(10) PRIMARY KEY, kode_produk VARCHAR(12) NOT NULL, …);"
+   ]
+  },
+  "alter-table": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Perpanjang nama kota",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Kolom `nama_kota` di `ms_kota` hanya muat 16 karakter. Ubah tipenya menjadi **VARCHAR(30)**, tetap **NOT NULL**.",
+   "kunci": "ALTER TABLE ms_kota MODIFY nama_kota VARCHAR(30) NOT NULL;",
+   "cek": "SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'ms_kota' ORDER BY ORDINAL_POSITION",
+   "hints": [
+    "Mengubah tipe kolom dilakukan dengan ALTER TABLE.",
+    "MODIFY nama_kolom tipe_baru aturan. Aturan NOT NULL harus ditulis lagi.",
+    "ALTER TABLE ms_kota MODIFY nama_kota VARCHAR(30) NOT NULL;"
+   ]
+  },
+  "rename-table": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Ganti nama tabel kategori",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Ganti nama tabel `ms_kategori` menjadi `ms_kategori_produk`.",
+   "kunci": "RENAME TABLE ms_kategori TO ms_kategori_produk;",
+   "cek": "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() ORDER BY TABLE_NAME",
+   "hints": [
+    "Ada perintah khusus untuk mengganti nama tabel.",
+    "Polanya: RENAME TABLE nama_lama TO nama_baru;",
+    "RENAME TABLE ms_kategori TO ms_kategori_produk;"
+   ]
+  },
+  "alter-add-column": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Telepon cabang",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Tambahkan kolom `telepon` bertipe **VARCHAR(20)** di akhir tabel `ms_cabang`.",
+   "kunci": "ALTER TABLE ms_cabang ADD COLUMN telepon VARCHAR(20);",
+   "cek": "SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'ms_cabang' ORDER BY ORDINAL_POSITION",
+   "hints": [
+    "Menambah kolom memakai ALTER TABLE … ADD COLUMN.",
+    "Kolom baru otomatis ditaruh paling akhir.",
+    "ALTER TABLE ms_cabang ADD COLUMN telepon VARCHAR(20);"
+   ]
+  },
+  "alter-drop-column": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Hapus kolom biaya",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Kolom `biaya_cabang` di `ms_harga_harian` tidak dipakai lagi. Hapus kolom tersebut.",
+   "kunci": "ALTER TABLE ms_harga_harian DROP COLUMN biaya_cabang;",
+   "cek": "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'ms_harga_harian' ORDER BY ORDINAL_POSITION",
+   "hints": [
+    "Menghapus kolom juga memakai ALTER TABLE.",
+    "Polanya: ALTER TABLE nama_tabel DROP COLUMN nama_kolom;",
+    "ALTER TABLE ms_harga_harian DROP COLUMN biaya_cabang;"
+   ]
+  },
+  "drop-table": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Hapus tabel harga",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Hapus tabel `ms_harga_harian` beserta seluruh isinya.",
+   "kunci": "DROP TABLE ms_harga_harian;",
+   "cek": "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() ORDER BY TABLE_NAME",
+   "hints": [
+    "DROP menghapus objek database.",
+    "Polanya: DROP TABLE nama_tabel;",
+    "DROP TABLE ms_harga_harian;"
+   ]
+  },
+  "truncate-table": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Kosongkan data penjualan",
+   "mode": "ubah",
+   "teks": "Kosongkan seluruh isi tabel `tr_penjualan` dengan cepat, tanpa menghapus tabelnya.",
+   "kunci": "TRUNCATE TABLE tr_penjualan;",
+   "cek": "SELECT (SELECT COUNT(*) FROM tr_penjualan) AS jumlah_baris, (SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tr_penjualan') AS tabel_masih_ada",
+   "hints": [
+    "Tabelnya harus tetap ada, hanya isinya yang hilang.",
+    "TRUNCATE TABLE mengosongkan tabel lebih cepat daripada DELETE.",
+    "TRUNCATE TABLE tr_penjualan;"
+   ]
+  },
+  "temporary-table": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Penjualan Januari sementara",
+   "mode": "ubah",
+   "teks": "Buat temporary table bernama `penjualan_jan` yang berisi **semua kolom** dari penjualan bulan **Januari 2026** (`tgl_transaksi` sebelum 1 Februari 2026).",
+   "kunci": "CREATE TEMPORARY TABLE penjualan_jan AS SELECT * FROM tr_penjualan WHERE tgl_transaksi < '2026-02-01';",
+   "cek": "SELECT COUNT(*) AS jumlah_baris, SUM(jumlah_pembelian) AS total_barang, MIN(tgl_transaksi) AS pertama, MAX(tgl_transaksi) AS terakhir FROM penjualan_jan",
+   "hints": [
+    "Temporary table hanya ada selama sesi berjalan.",
+    "Isi tabelnya bisa langsung diambil dari SELECT: CREATE TEMPORARY TABLE … AS SELECT …",
+    "CREATE TEMPORARY TABLE penjualan_jan AS SELECT * FROM tr_penjualan WHERE tgl_transaksi < '2026-02-01';"
+   ]
+  },
+  "auto-increment": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Tabel keluhan bernomor otomatis",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Buat tabel `keluhan` dengan kolom `id` (INT, **AUTO_INCREMENT**, PRIMARY KEY), `kode_cabang` (VARCHAR(10)), dan `isi` (VARCHAR(200)). Lalu masukkan dua keluhan **tanpa mengisi id**:\n\n| kode_cabang | isi |\n|---|---|\n| CABANG-001 | AC mati |\n| CABANG-003 | Antrean kasir panjang |",
+   "kunci": "CREATE TABLE keluhan (id INT AUTO_INCREMENT PRIMARY KEY, kode_cabang VARCHAR(10), isi VARCHAR(200)); INSERT INTO keluhan (kode_cabang, isi) VALUES ('CABANG-001', 'AC mati'), ('CABANG-003', 'Antrean kasir panjang');",
+   "cek": "SELECT id, kode_cabang, isi FROM keluhan ORDER BY id",
+   "hints": [
+    "AUTO_INCREMENT membuat MySQL mengisi id secara otomatis: 1, 2, 3, …",
+    "Saat INSERT, sebutkan kolom yang diisi saja: INSERT INTO keluhan (kode_cabang, isi) VALUES …",
+    "Pisahkan CREATE TABLE dan INSERT dengan titik koma."
+   ]
+  },
+  "primary-key": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Primary key penjualan",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Tabel `tr_penjualan` belum punya primary key. Tambahkan kolom `id` bertipe INT, **AUTO_INCREMENT**, dan **PRIMARY KEY** sebagai kolom **pertama**.",
+   "kunci": "ALTER TABLE tr_penjualan ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY FIRST;",
+   "cek": "SELECT COLUMN_NAME, COLUMN_KEY, EXTRA FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tr_penjualan' ORDER BY ORDINAL_POSITION",
+   "hints": [
+    "Kolom baru ditambahkan dengan ALTER TABLE … ADD COLUMN.",
+    "Kata FIRST menaruh kolom di posisi paling awal.",
+    "ALTER TABLE tr_penjualan ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY FIRST;"
+   ]
+  },
+  "foreign-key": {
+   "level": "Lanjut",
+   "xp": 30,
+   "judul": "Tabel stok per cabang",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Buat tabel `stok_cabang` dengan kolom `kode_cabang` (VARCHAR(10)), `kode_produk` (VARCHAR(12)), dan `stok` (INT). Primary key-nya gabungan `(kode_cabang, kode_produk)`. Jadikan `kode_cabang` **foreign key** ke `ms_cabang(kode_cabang)` dan `kode_produk` **foreign key** ke `ms_produk(kode_produk)`.",
+   "kunci": "CREATE TABLE stok_cabang (kode_cabang VARCHAR(10), kode_produk VARCHAR(12), stok INT, PRIMARY KEY (kode_cabang, kode_produk), FOREIGN KEY (kode_cabang) REFERENCES ms_cabang(kode_cabang), FOREIGN KEY (kode_produk) REFERENCES ms_produk(kode_produk));",
+   "cek": "SELECT COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'stok_cabang' ORDER BY REFERENCED_TABLE_NAME IS NULL, COLUMN_NAME, REFERENCED_TABLE_NAME",
+   "hints": [
+    "Primary key gabungan ditulis terpisah: PRIMARY KEY (kolom1, kolom2).",
+    "Foreign key: FOREIGN KEY (kolom) REFERENCES tabel_induk(kolom).",
+    "Kamu butuh dua FOREIGN KEY, satu untuk kode_cabang dan satu untuk kode_produk."
+   ]
+  },
+  "disable-foreign-key-checks": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Kosongkan tabel ms_kategori",
+   "mode": "ubah",
+   "teks": "Kosongkan tabel `ms_kategori` dengan `TRUNCATE`. Perintah ini biasanya ditolak karena `ms_kategori` dirujuk oleh `ms_produk`. Matikan pengecekan foreign key sementara, lakukan `TRUNCATE`, lalu **nyalakan kembali** pengecekannya.",
+   "kunci": "SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE ms_kategori; SET FOREIGN_KEY_CHECKS = 1;",
+   "cek": "SELECT (SELECT COUNT(*) FROM ms_kategori) AS jumlah_kategori, @@SESSION.foreign_key_checks AS pengecekan_aktif",
+   "hints": [
+    "Pengecekan foreign key diatur lewat variabel FOREIGN_KEY_CHECKS.",
+    "SET FOREIGN_KEY_CHECKS = 0; mematikan pengecekan, = 1 menyalakannya lagi.",
+    "SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE ms_kategori; SET FOREIGN_KEY_CHECKS = 1;"
+   ]
+  },
+  "not-null": {
+   "level": "Lanjut",
+   "xp": 30,
+   "judul": "Nama belakang wajib diisi",
+   "mode": "ubah",
+   "teks": "Kolom `nama_belakang` di `ms_karyawan` akan dibuat **NOT NULL**, tetapi ada karyawan yang nama belakangnya masih NULL sehingga perintahnya akan ditolak. Isi dulu nama belakang yang kosong dengan tanda `'-'`, lalu ubah kolomnya menjadi **VARCHAR(9) NOT NULL**.",
+   "kunci": "UPDATE ms_karyawan SET nama_belakang = '-' WHERE nama_belakang IS NULL; ALTER TABLE ms_karyawan MODIFY nama_belakang VARCHAR(9) NOT NULL;",
+   "cek": "SELECT (SELECT IS_NULLABLE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'ms_karyawan' AND COLUMN_NAME = 'nama_belakang') AS boleh_null, (SELECT COUNT(*) FROM ms_karyawan WHERE nama_belakang = '-') AS diisi_strip",
+   "hints": [
+    "Kolom tidak bisa dijadikan NOT NULL selama masih ada baris yang NULL.",
+    "Langkah 1: UPDATE … SET nama_belakang = '-' WHERE nama_belakang IS NULL;",
+    "Langkah 2: ALTER TABLE ms_karyawan MODIFY nama_belakang VARCHAR(9) NOT NULL;"
+   ]
+  },
+  "unique": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Nama cabang tidak boleh kembar",
+   "mode": "ubah",
+   "teks": "Tambahkan constraint **UNIQUE** bernama `uq_nama_cabang` pada kolom `nama_cabang` di tabel `ms_cabang`.",
+   "kunci": "ALTER TABLE ms_cabang ADD CONSTRAINT uq_nama_cabang UNIQUE (nama_cabang);",
+   "cek": "SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE FROM information_schema.TABLE_CONSTRAINTS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'ms_cabang' ORDER BY CONSTRAINT_NAME",
+   "hints": [
+    "Constraint ditambahkan lewat ALTER TABLE … ADD CONSTRAINT.",
+    "Polanya: ADD CONSTRAINT nama_constraint UNIQUE (kolom).",
+    "ALTER TABLE ms_cabang ADD CONSTRAINT uq_nama_cabang UNIQUE (nama_cabang);"
+   ]
+  },
+  "check": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Jumlah pembelian harus positif",
+   "mode": "ubah",
+   "teks": "Tambahkan constraint bernama `cek_jumlah` pada tabel `tr_penjualan` yang memastikan `jumlah_pembelian` **selalu lebih dari 0**.",
+   "kunci": "ALTER TABLE tr_penjualan ADD CONSTRAINT cek_jumlah CHECK (jumlah_pembelian > 0);",
+   "cek": "SELECT CONSTRAINT_NAME, CHECK_CLAUSE FROM information_schema.CHECK_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE()",
+   "hints": [
+    "CHECK berisi kondisi yang harus selalu benar untuk setiap baris.",
+    "Polanya: ADD CONSTRAINT nama CHECK (kondisi).",
+    "ALTER TABLE tr_penjualan ADD CONSTRAINT cek_jumlah CHECK (jumlah_pembelian > 0);"
+   ]
+  },
+  "default": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Unit bawaan 1",
+   "mode": "ubah",
+   "teks": "Atur agar kolom `unit` di tabel `ms_produk` bernilai **1** secara otomatis jika tidak diisi saat INSERT.",
+   "kunci": "ALTER TABLE ms_produk ALTER COLUMN unit SET DEFAULT 1;",
+   "cek": "SELECT COLUMN_NAME, COLUMN_DEFAULT, IS_NULLABLE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'ms_produk' AND COLUMN_NAME = 'unit'",
+   "hints": [
+    "Nilai bawaan diatur dengan DEFAULT.",
+    "Bisa memakai ALTER TABLE … ALTER COLUMN kolom SET DEFAULT nilai.",
+    "ALTER TABLE ms_produk ALTER COLUMN unit SET DEFAULT 1;"
+   ]
+  },
+  "insert": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Kategori makanan beku",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Tambahkan kategori baru dengan `kode_kategori` **KAT-007** dan `nama_kategori` **Makanan Beku**.",
+   "kunci": "INSERT INTO ms_kategori (kode_kategori, nama_kategori) VALUES ('KAT-007', 'Makanan Beku');",
+   "cek": "SELECT kode_kategori, nama_kategori FROM ms_kategori ORDER BY kode_kategori",
+   "hints": [
+    "Menambah baris memakai INSERT INTO.",
+    "Polanya: INSERT INTO tabel (kolom1, kolom2) VALUES (nilai1, nilai2);",
+    "INSERT INTO ms_kategori (kode_kategori, nama_kategori) VALUES ('KAT-007', 'Makanan Beku');"
+   ]
+  },
+  "insert-ignore": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Tambah kota tanpa error",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Masukkan dua kota berikut dalam **satu** perintah. Kode `KOTA-003` sudah dipakai, jadi baris itu harus **dilewati tanpa error**, sedangkan Cimahi tetap masuk.\n\n| kode_kota | nama_kota | kode_propinsi |\n|---|---|---|\n| KOTA-003 | Bogor Kota | 32 |\n| KOTA-009 | Cimahi | 32 |",
+   "kunci": "INSERT IGNORE INTO ms_kota (kode_kota, nama_kota, kode_propinsi) VALUES ('KOTA-003', 'Bogor Kota', '32'), ('KOTA-009', 'Cimahi', '32');",
+   "cek": "SELECT kode_kota, nama_kota, kode_propinsi FROM ms_kota ORDER BY kode_kota",
+   "hints": [
+    "INSERT biasa akan gagal seluruhnya karena KOTA-003 sudah ada.",
+    "INSERT IGNORE melewati baris yang bermasalah dan tetap memasukkan baris lainnya.",
+    "INSERT IGNORE INTO ms_kota (…) VALUES ('KOTA-003', …), ('KOTA-009', 'Cimahi', '32');"
+   ]
+  },
+  "update": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Ganti nama cabang Tajur",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Cabang `CABANG-003` berganti nama menjadi **Minimarket Tajur Raya**. Perbarui datanya.",
+   "kunci": "UPDATE ms_cabang SET nama_cabang = 'Minimarket Tajur Raya' WHERE kode_cabang = 'CABANG-003';",
+   "cek": "SELECT kode_cabang, nama_cabang FROM ms_cabang ORDER BY kode_cabang",
+   "hints": [
+    "Mengubah data memakai UPDATE … SET.",
+    "Jangan lupa WHERE, kalau tidak semua cabang ikut berganti nama.",
+    "UPDATE ms_cabang SET nama_cabang = 'Minimarket Tajur Raya' WHERE kode_cabang = 'CABANG-003';"
+   ]
+  },
+  "update-join": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Harga sembako naik",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Naikkan `harga_berlaku_cabang` sebesar **500** untuk semua baris di `ms_harga_harian` yang produknya berkategori **Sembako** (`kode_kategori` = `'KAT-003'`). Gunakan `UPDATE` dengan `JOIN` ke `ms_produk`.",
+   "kunci": "UPDATE ms_harga_harian h JOIN ms_produk p ON p.kode_produk = h.kode_produk SET h.harga_berlaku_cabang = h.harga_berlaku_cabang + 500 WHERE p.kode_kategori = 'KAT-003';",
+   "cek": "SELECT kode_produk, kode_cabang, tgl_berlaku, harga_berlaku_cabang FROM ms_harga_harian ORDER BY kode_produk, kode_cabang, tgl_berlaku",
+   "hints": [
+    "Kategori produk tidak ada di ms_harga_harian, jadi perlu JOIN ke ms_produk.",
+    "Polanya: UPDATE tabel1 JOIN tabel2 ON … SET … WHERE …",
+    "UPDATE ms_harga_harian h JOIN ms_produk p ON p.kode_produk = h.kode_produk SET h.harga_berlaku_cabang = h.harga_berlaku_cabang + 500 WHERE p.kode_kategori = 'KAT-003';"
+   ]
+  },
+  "delete": {
+   "level": "Dasar",
+   "xp": 10,
+   "judul": "Hapus penjualan cabang Cikokol",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Data penjualan cabang `CABANG-006` ternyata salah input. Hapus semua penjualan cabang tersebut.",
+   "kunci": "DELETE FROM tr_penjualan WHERE kode_cabang = 'CABANG-006';",
+   "cek": "SELECT kode_cabang, COUNT(*) AS jumlah FROM tr_penjualan GROUP BY kode_cabang ORDER BY kode_cabang",
+   "hints": [
+    "Menghapus baris memakai DELETE FROM.",
+    "Pakai WHERE agar hanya penjualan CABANG-006 yang terhapus.",
+    "DELETE FROM tr_penjualan WHERE kode_cabang = 'CABANG-006';"
+   ]
+  },
+  "delete-join": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Hapus penjualan perawatan diri",
+   "mode": "ubah",
+   "teks": "Hapus semua penjualan produk yang berkategori **Perawatan Diri** (`kode_kategori` = `'KAT-004'`). Gunakan `DELETE` dengan `JOIN` ke `ms_produk`.",
+   "kunci": "DELETE t FROM tr_penjualan t JOIN ms_produk p ON p.kode_produk = t.kode_produk WHERE p.kode_kategori = 'KAT-004';",
+   "cek": "SELECT (SELECT COUNT(*) FROM tr_penjualan) AS sisa_penjualan, (SELECT COUNT(*) FROM tr_penjualan t JOIN ms_produk p ON p.kode_produk = t.kode_produk WHERE p.kode_kategori = 'KAT-004') AS penjualan_perawatan_diri",
+   "hints": [
+    "Kategori ada di ms_produk, jadi tr_penjualan perlu di-JOIN.",
+    "Sebutkan tabel yang dihapus barisnya tepat setelah DELETE: DELETE t FROM …",
+    "DELETE t FROM tr_penjualan t JOIN ms_produk p ON p.kode_produk = t.kode_produk WHERE p.kode_kategori = 'KAT-004';"
+   ]
+  },
+  "on-delete-cascade": {
+   "level": "Lanjut",
+   "xp": 30,
+   "judul": "Jadwal kasir ikut terhapus",
+   "mode": "ubah",
+   "teks": "Buat tabel `jadwal_kasir` dengan kolom `id` (INT AUTO_INCREMENT PRIMARY KEY), `kode_karyawan` (VARCHAR(10) NOT NULL), dan `hari` (VARCHAR(10) NOT NULL). Jadikan `kode_karyawan` foreign key ke `ms_karyawan(kode_karyawan)` dengan **ON DELETE CASCADE**.\n\nLalu masukkan jadwal `('EMP-0007', 'Senin')`, `('EMP-0007', 'Rabu')`, dan `('EMP-0005', 'Senin')`, kemudian hapus karyawan `EMP-0007`. Kedua jadwalnya harus ikut terhapus.",
+   "kunci": "CREATE TABLE jadwal_kasir (id INT AUTO_INCREMENT PRIMARY KEY, kode_karyawan VARCHAR(10) NOT NULL, hari VARCHAR(10) NOT NULL, FOREIGN KEY (kode_karyawan) REFERENCES ms_karyawan(kode_karyawan) ON DELETE CASCADE); INSERT INTO jadwal_kasir (kode_karyawan, hari) VALUES ('EMP-0007', 'Senin'), ('EMP-0007', 'Rabu'), ('EMP-0005', 'Senin'); DELETE FROM ms_karyawan WHERE kode_karyawan = 'EMP-0007';",
+   "cek": "SELECT (SELECT COUNT(*) FROM jadwal_kasir) AS isi_jadwal, (SELECT COUNT(*) FROM jadwal_kasir WHERE kode_karyawan = 'EMP-0007') AS jadwal_emp_0007, (SELECT COUNT(*) FROM ms_karyawan) AS jumlah_karyawan",
+   "hints": [
+    "ON DELETE CASCADE ditulis di akhir definisi FOREIGN KEY.",
+    "FOREIGN KEY (kode_karyawan) REFERENCES ms_karyawan(kode_karyawan) ON DELETE CASCADE",
+    "Urutannya: CREATE TABLE …; INSERT INTO …; DELETE FROM ms_karyawan WHERE kode_karyawan = 'EMP-0007';"
+   ]
+  },
+  "replace": {
+   "level": "Menengah",
+   "xp": 20,
+   "judul": "Perbarui atau tambah kategori",
+   "mode": "ubah",
+   "urut": true,
+   "teks": "Dengan **satu** perintah `REPLACE`, ubah nama kategori `KAT-006` menjadi **Alat Tulis Kantor** dan tambahkan kategori baru `KAT-007` bernama **Mainan**.",
+   "kunci": "REPLACE INTO ms_kategori (kode_kategori, nama_kategori) VALUES ('KAT-006', 'Alat Tulis Kantor'), ('KAT-007', 'Mainan');",
+   "cek": "SELECT kode_kategori, nama_kategori FROM ms_kategori ORDER BY kode_kategori",
+   "hints": [
+    "REPLACE menimpa baris yang primary key-nya sudah ada, dan menambah baris jika belum ada.",
+    "Bentuknya mirip INSERT: REPLACE INTO tabel (kolom) VALUES (…), (…);",
+    "REPLACE INTO ms_kategori (kode_kategori, nama_kategori) VALUES ('KAT-006', 'Alat Tulis Kantor'), ('KAT-007', 'Mainan');"
+   ]
+  }
+ },
+ "studi": {
+  "slug": "studi-kasus-minimarket",
+  "kategori": "Studi Kasus",
+  "urutan": 265,
+  "judul": "Studi Kasus: Minimarket",
+  "ringkasan": "Latihan gabungan SELECT, JOIN, GROUP BY, dan subquery di data jaringan minimarket.",
+  "isi": "Saatnya memakai semua yang sudah kamu pelajari di data yang berbeda. Di studi kasus ini kamu bekerja untuk **jaringan minimarket fiktif** yang punya 6 cabang di Jakarta, Bogor, Depok, Bandung, dan Tangerang. Datanya buatan, mencakup transaksi Januari sampai Februari 2026.\n\nNama tabelnya berawalan `ms_` (*master*, data induk) dan `tr_` (*transaksi*), seperti yang sering dipakai di perusahaan.\n\n## Tabel-tabelnya\n\n| Tabel | Isi | Kolom penting |\n|---|---|---|\n| `ms_propinsi` | Propinsi | `kode_propinsi`, `nama_propinsi` |\n| `ms_kota` | Kota | `kode_kota`, `nama_kota`, `kode_propinsi` |\n| `ms_cabang` | Cabang minimarket | `kode_cabang`, `nama_cabang`, `kode_kota` |\n| `ms_karyawan` | Karyawan / kasir | `kode_karyawan`, `kode_cabang`, `nama_depan`, `nama_belakang`, `jenis_kelamin` |\n| `ms_kategori` | Kategori produk | `kode_kategori`, `nama_kategori` |\n| `ms_produk` | Produk | `kode_produk`, `kode_item`, `kode_kategori`, `nama_produk`, `unit`, `kode_satuan` |\n| `ms_harga_harian` | Harga tiap produk per cabang | `kode_produk`, `kode_cabang`, `tgl_berlaku`, `harga_berlaku_cabang`, `modal_cabang`, `biaya_cabang` |\n| `tr_penjualan` | Barang yang terjual | `tgl_transaksi`, `kode_cabang`, `kode_kasir`, `kode_produk`, `jumlah_pembelian` |\n\n## Cara tabel saling terhubung\n\n- Wilayah bertingkat: `ms_cabang.kode_kota` → `ms_kota`, lalu `ms_kota.kode_propinsi` → `ms_propinsi`.\n- `tr_penjualan.kode_kasir` menunjuk ke `ms_karyawan.kode_karyawan`. Nama kolomnya **berbeda**, jadi perhatikan saat menulis `ON`.\n- `ms_produk.kode_item` bisa sama untuk beberapa produk: misalnya air mineral botol dan air mineral satu dus. `kode_produk` yang membedakannya.\n- Harga tidak disimpan di `ms_produk`, tetapi di `ms_harga_harian`. Harga bisa berbeda tiap cabang dan bisa berubah: baris dengan `tgl_berlaku` terbaru yang tidak melewati tanggal transaksi adalah harga yang berlaku.\n\n## Coba lihat sendiri\n\n```sql\nSELECT * FROM ms_cabang;\n```\n\n```sql\nSELECT * FROM tr_penjualan ORDER BY tgl_transaksi LIMIT 10;\n```\n\nContoh di bawah menampilkan riwayat harga satu produk di satu cabang. Perhatikan dua baris dengan `tgl_berlaku` berbeda:\n\n```sql\nSELECT tgl_berlaku, harga_berlaku_cabang, modal_cabang\nFROM ms_harga_harian\nWHERE kode_produk = 'PROD-0000008' AND kode_cabang = 'CABANG-003';\n```\n\n> Studi kasus ini menggabungkan beberapa konsep sekaligus. Kalau buntu, buka lagi materi terkait (WHERE, JOIN, GROUP BY, subquery) atau minta hint.",
+  "latihan": [
+   {
+    "level": "Dasar",
+    "xp": 10,
+    "judul": "Daftar cabang",
+    "konsep": "SELECT kolom",
+    "teks": "Manajer area ingin melihat semua cabang. Tampilkan `kode_cabang` dan `nama_cabang` dari tabel `ms_cabang`.",
+    "kunci": "SELECT kode_cabang, nama_cabang FROM ms_cabang;",
+    "hints": [
+     "Pilih dua kolom saja, bukan semua kolom.",
+     "Pisahkan nama kolom dengan koma.",
+     "SELECT kode_cabang, nama_cabang FROM …"
+    ]
+   },
+   {
+    "level": "Dasar",
+    "xp": 10,
+    "judul": "Produk kategori minuman",
+    "konsep": "WHERE",
+    "teks": "Tampilkan `kode_produk`, `nama_produk`, dan `kode_satuan` untuk produk berkategori minuman, yaitu `kode_kategori` = `'KAT-002'`.",
+    "kunci": "SELECT kode_produk, nama_produk, kode_satuan FROM ms_produk WHERE kode_kategori = 'KAT-002';",
+    "hints": [
+     "Data produk ada di tabel ms_produk.",
+     "Saring baris dengan WHERE. Teks ditulis di antara petik tunggal.",
+     "WHERE kode_kategori = 'KAT-002'"
+    ]
+   },
+   {
+    "level": "Dasar",
+    "xp": 10,
+    "judul": "Karyawan perempuan",
+    "konsep": "WHERE + ORDER BY",
+    "urut": true,
+    "teks": "Tampilkan `nama_depan` dan `nama_belakang` karyawan perempuan (`jenis_kelamin` = `'P'`), diurutkan berdasarkan nama depan dari A ke Z.",
+    "kunci": "SELECT nama_depan, nama_belakang FROM ms_karyawan WHERE jenis_kelamin = 'P' ORDER BY nama_depan;",
+    "hints": [
+     "Data karyawan ada di ms_karyawan.",
+     "Urutan klausa: SELECT … FROM … WHERE … ORDER BY …",
+     "WHERE jenis_kelamin = 'P' ORDER BY nama_depan"
+    ]
+   },
+   {
+    "level": "Dasar",
+    "xp": 10,
+    "judul": "Produk kemasan dus",
+    "konsep": "WHERE",
+    "teks": "Beberapa produk dijual per dus. Tampilkan `nama_produk` dan `unit` (jumlah isi per kemasan) untuk produk dengan `kode_satuan` = `'DUS'`.",
+    "kunci": "SELECT nama_produk, unit FROM ms_produk WHERE kode_satuan = 'DUS';",
+    "hints": [
+     "Kolom kode_satuan berisi PCS, BTL, DUS, dan seterusnya.",
+     "Saring dengan WHERE kode_satuan = …",
+     "SELECT nama_produk, unit FROM ms_produk WHERE kode_satuan = 'DUS';"
+    ]
+   },
+   {
+    "level": "Menengah",
+    "xp": 20,
+    "judul": "Nama lengkap karyawan",
+    "konsep": "CONCAT + alias",
+    "nama_kolom": true,
+    "teks": "Untuk papan nama, gabungkan nama depan dan nama belakang karyawan dengan satu spasi di tengah. Beberapa karyawan tidak punya nama belakang (NULL); untuk mereka, `nama_lengkap` cukup berisi nama depan saja. Tampilkan kolom `nama_lengkap` dan `kode_cabang` untuk semua karyawan.",
+    "kunci": "SELECT CONCAT_WS(' ', nama_depan, nama_belakang) AS nama_lengkap, kode_cabang FROM ms_karyawan;",
+    "hints": [
+     "Fungsi CONCAT(a, b, c) menggabungkan teks, tetapi hasilnya NULL jika salah satu bagiannya NULL.",
+     "CONCAT_WS(pemisah, a, b) menggabungkan dengan pemisah dan melewati bagian yang NULL.",
+     "CONCAT_WS(' ', nama_depan, nama_belakang) AS nama_lengkap"
+    ]
+   },
+   {
+    "level": "Menengah",
+    "xp": 20,
+    "judul": "Cabang dan kotanya",
+    "konsep": "INNER JOIN",
+    "teks": "Tampilkan `nama_cabang` dan `nama_kota` untuk setiap cabang.",
+    "kunci": "SELECT c.nama_cabang, k.nama_kota FROM ms_cabang c JOIN ms_kota k ON k.kode_kota = c.kode_kota;",
+    "hints": [
+     "Nama kota tidak ada di ms_cabang, tetapi di ms_kota.",
+     "Gabungkan kedua tabel lewat kolom kode_kota.",
+     "FROM ms_cabang c JOIN ms_kota k ON k.kode_kota = c.kode_kota"
+    ]
+   },
+   {
+    "level": "Menengah",
+    "xp": 20,
+    "judul": "Jumlah transaksi per cabang",
+    "konsep": "GROUP BY + COUNT",
+    "nama_kolom": true,
+    "teks": "Hitung banyaknya baris penjualan di setiap cabang. Tampilkan `kode_cabang` dan `jumlah_transaksi`.",
+    "kunci": "SELECT kode_cabang, COUNT(*) AS jumlah_transaksi FROM tr_penjualan GROUP BY kode_cabang;",
+    "hints": [
+     "COUNT(*) menghitung jumlah baris.",
+     "Agar dihitung per cabang, kelompokkan dengan GROUP BY kode_cabang.",
+     "Beri nama kolom hasil dengan AS jumlah_transaksi."
+    ]
+   },
+   {
+    "level": "Menengah",
+    "xp": 20,
+    "judul": "Produk yang pernah naik harga",
+    "konsep": "GROUP BY + HAVING",
+    "teks": "Harga beberapa produk naik di tengah periode, sehingga produk itu punya lebih dari satu `tgl_berlaku` di `ms_harga_harian`. Tampilkan `kode_produk` dan `nama_produk` yang punya **lebih dari satu** tanggal berlaku yang berbeda.",
+    "kunci": "SELECT p.kode_produk, p.nama_produk FROM ms_produk p JOIN ms_harga_harian h ON h.kode_produk = p.kode_produk GROUP BY p.kode_produk, p.nama_produk HAVING COUNT(DISTINCT h.tgl_berlaku) > 1;",
+    "hints": [
+     "Hitung tanggal berlaku per produk dengan COUNT(DISTINCT tgl_berlaku).",
+     "Syarat setelah pengelompokan ditulis di HAVING, bukan WHERE.",
+     "… GROUP BY p.kode_produk, p.nama_produk HAVING COUNT(DISTINCT h.tgl_berlaku) > 1"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Lima produk terlaris",
+    "konsep": "JOIN + GROUP BY + LIMIT",
+    "urut": true,
+    "nama_kolom": true,
+    "teks": "Tampilkan 5 produk dengan jumlah barang terjual terbanyak. Kolomnya `nama_produk` dan `total_terjual` (jumlah dari `jumlah_pembelian`), urut dari yang terbanyak. Jika `total_terjual` sama, urutkan berdasarkan `nama_produk` dari A ke Z.",
+    "kunci": "SELECT p.nama_produk, SUM(t.jumlah_pembelian) AS total_terjual FROM tr_penjualan t JOIN ms_produk p ON p.kode_produk = t.kode_produk GROUP BY p.kode_produk, p.nama_produk ORDER BY total_terjual DESC, p.nama_produk LIMIT 5;",
+    "hints": [
+     "Jumlahkan jumlah_pembelian per produk dengan SUM dan GROUP BY.",
+     "Nama produk ada di ms_produk, jadi JOIN lewat kode_produk.",
+     "… ORDER BY total_terjual DESC, p.nama_produk LIMIT 5"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Kota tanpa cabang",
+    "konsep": "LEFT JOIN … IS NULL",
+    "teks": "Tim ekspansi mencari kota yang **belum** punya cabang. Tampilkan `nama_kota` dari kota-kota tersebut.",
+    "kunci": "SELECT k.nama_kota FROM ms_kota k LEFT JOIN ms_cabang c ON c.kode_kota = k.kode_kota WHERE c.kode_cabang IS NULL;",
+    "hints": [
+     "INNER JOIN membuang kota yang tidak punya pasangan. Kamu justru butuh kota itu.",
+     "LEFT JOIN mempertahankan semua kota; yang tidak punya cabang bernilai NULL di kolom cabang.",
+     "… LEFT JOIN ms_cabang c ON c.kode_kota = k.kode_kota WHERE c.kode_cabang IS NULL"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Karyawan yang belum pernah jadi kasir",
+    "konsep": "NOT IN / LEFT JOIN",
+    "teks": "Tampilkan `kode_karyawan`, `nama_depan`, dan `kode_cabang` karyawan yang **tidak pernah** tercatat sebagai kasir di `tr_penjualan`.",
+    "kunci": "SELECT kode_karyawan, nama_depan, kode_cabang FROM ms_karyawan WHERE kode_karyawan NOT IN (SELECT kode_kasir FROM tr_penjualan);",
+    "hints": [
+     "Kasir di tr_penjualan disimpan di kolom kode_kasir, yang berisi kode_karyawan.",
+     "Ambil dulu semua kode_kasir dengan subquery, lalu cari karyawan yang tidak ada di situ.",
+     "WHERE kode_karyawan NOT IN (SELECT kode_kasir FROM tr_penjualan)"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Barang terjual per propinsi",
+    "konsep": "JOIN banyak tabel + GROUP BY",
+    "nama_kolom": true,
+    "teks": "Tampilkan `nama_propinsi` dan `total_barang` (jumlah seluruh `jumlah_pembelian`) untuk setiap propinsi yang punya penjualan.",
+    "kunci": "SELECT pr.nama_propinsi, SUM(t.jumlah_pembelian) AS total_barang FROM tr_penjualan t JOIN ms_cabang c ON c.kode_cabang = t.kode_cabang JOIN ms_kota k ON k.kode_kota = c.kode_kota JOIN ms_propinsi pr ON pr.kode_propinsi = k.kode_propinsi GROUP BY pr.nama_propinsi;",
+    "hints": [
+     "Jalur datanya: tr_penjualan → ms_cabang → ms_kota → ms_propinsi.",
+     "Tiga JOIN berurutan, masing-masing lewat kode_cabang, kode_kota, lalu kode_propinsi.",
+     "… GROUP BY pr.nama_propinsi dengan SUM(t.jumlah_pembelian) AS total_barang"
+    ]
+   },
+   {
+    "level": "Lanjut",
+    "xp": 30,
+    "judul": "Omzet per cabang",
+    "konsep": "Subquery berkorelasi",
+    "nama_kolom": true,
+    "teks": "Hitung omzet (jumlah × harga) setiap cabang. Harga yang dipakai adalah harga **yang berlaku saat transaksi**, yaitu baris `ms_harga_harian` untuk produk dan cabang yang sama dengan `tgl_berlaku` terbaru yang tidak melewati `tgl_transaksi`. Tampilkan `nama_cabang` dan `omzet`.",
+    "kunci": "SELECT c.nama_cabang, SUM(t.jumlah_pembelian * h.harga_berlaku_cabang) AS omzet FROM tr_penjualan t JOIN ms_cabang c ON c.kode_cabang = t.kode_cabang JOIN ms_harga_harian h ON h.kode_produk = t.kode_produk AND h.kode_cabang = t.kode_cabang AND h.tgl_berlaku = (SELECT MAX(h2.tgl_berlaku) FROM ms_harga_harian h2 WHERE h2.kode_produk = t.kode_produk AND h2.kode_cabang = t.kode_cabang AND h2.tgl_berlaku <= t.tgl_transaksi) GROUP BY c.nama_cabang;",
+    "hints": [
+     "JOIN tr_penjualan ke ms_harga_harian lewat kode_produk DAN kode_cabang. Tapi satu produk bisa punya dua harga.",
+     "Pilih harga dengan subquery: SELECT MAX(h2.tgl_berlaku) … WHERE h2.tgl_berlaku <= t.tgl_transaksi untuk produk & cabang yang sama.",
+     "Kalikan jumlah_pembelian dengan harga_berlaku_cabang, lalu SUM per nama_cabang."
+    ]
+   }
+  ]
+ }
+};
