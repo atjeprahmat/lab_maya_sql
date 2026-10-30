@@ -1106,7 +1106,7 @@ html.sempit, html.sempit body { height: auto; min-height: 100%; overflow: auto; 
 
 /* ---------- Laman Muka: info keahlian, satu kartu berisi 4 bagian (bukan tombol) ---------- */
 .muka-kiri .kotak-info { position: relative; padding: 30px 6px 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: 16px; background: var(--panel); }
-.muka-kiri .kotak-info::before { content: "Tentang lab ini"; position: absolute; left: 18px; top: 9px; font-size: 11px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.muka-kiri .kotak-info::before { content: "Tentang media ini"; position: absolute; left: 18px; top: 9px; font-size: 11px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .info-ubin { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; column-gap: 12px; align-items: start; padding: 10px 12px; }
 .info-ubin:nth-child(-n+2) { border-bottom: 2px dashed var(--line); }
 .info-ubin:nth-child(odd) { border-right: 2px dashed var(--line); }
@@ -1152,3 +1152,9 @@ html.sempit, html.sempit body { height: auto; min-height: 100%; overflow: auto; 
 .tutor-renung .opsi button { padding: 7px 10px; font-size: 13.5px; }
 .sempit .tutor-renung { grid-template-columns: 1fr; }
 .jurnal label textarea { margin-top: 8px; }
+
+/* ---------- Kontak pengelola (layar Masuk): tautan WhatsApp ---------- */
+#privasiKontak a { color: var(--ink); font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
+#privasiKontak a:hover { background: var(--mint); }
+.masuk-kartu .setuju-info { margin: 0; padding: 10px 12px; border: 2px dashed var(--tepi); border-radius: 10px; background: #fffbe8; font-size: 12.5px; line-height: 1.45; }
+.masuk-kartu .setuju-info[hidden] { display: none; }

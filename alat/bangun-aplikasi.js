@@ -1,7 +1,7 @@
 // Bangun lab menjadi beberapa aplikasi terpisah, satu per kategori (daftar di js/aplikasi.js).
 //   node alat/bangun-aplikasi.js            → semua aplikasi
 //   node alat/bangun-aplikasi.js joining-tables studi-kasus   → hanya aplikasi tertentu
-// Hasil: dist/lab-maya-sql-NN-<id>/ (siap dibuka / diunggah) dan dist/lab-maya-sql-NN-<id>.zip.
+// Hasil: dist/media-interaktif-sql-NN-<id>/ (siap dibuka / diunggah) dan dist/media-interaktif-sql-NN-<id>.zip.
 // Isi folder aplikasi sama dengan lab lengkap, hanya js/config.js yang memilih kategorinya.
 const fs = require('fs'), path = require('path'), vm = require('vm'), { spawnSync } = require('child_process');
 
@@ -35,15 +35,15 @@ function buatZip(nama, zip) {
 const ukuran = d => fs.readdirSync(d, { withFileTypes: true }).reduce((a, e) => a + (e.isDirectory() ? ukuran(path.join(d, e.name)) : fs.statSync(path.join(d, e.name)).size), 0);
 
 for (const [id, app] of daftar) {
-  const nama = `lab-maya-sql-${String(app.no).padStart(2, '0')}-${id}`, tujuan = path.join(DIST, nama);
+  const nama = `media-interaktif-sql-${String(app.no).padStart(2, '0')}-${id}`, tujuan = path.join(DIST, nama);
   fs.rmSync(tujuan, { recursive: true, force: true });
   for (const b of DIBAWA) fs.cpSync(path.join(AKAR, b), path.join(tujuan, b), { recursive: true });
 
   // judul & deskripsi halaman (sebelum JavaScript jalan, mis. di daftar unggahan / mesin pencari)
-  const judul = `Ngulik Data · Lab Maya SQL ${app.no} – ${app.judul}`;
+  const judul = `Ngulik Data · Media Interaktif SQL ${app.no} – ${app.judul}`;
   let html = fs.readFileSync(path.join(tujuan, 'index.html'), 'utf8');
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${esc(judul)}</title>`)
-    .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(`Lab Maya ${app.no} · ${app.kategori}: ${app.tujuan} SMK kelas X–XII, PPLG/RPL.`)}">`);
+    .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(`Media Interaktif ${app.no} · ${app.kategori}: ${app.tujuan} SMK kelas X–XII, PPLG/RPL.`)}">`);
   fs.writeFileSync(path.join(tujuan, 'index.html'), html);
 
   // config: pengaturan pengelola dibawa, aplikasi dipilih

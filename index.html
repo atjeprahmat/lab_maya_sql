@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ngulik Data · Lab Maya SQL – Analis Data Minimarket (Phi Minimart)</title>
-<meta name="description" content="Lab Maya interaktif: Lab Maya 1 · Querying Data: belajar query SQL (SELECT, ORDER BY, WHERE, IN, LIKE, IS NULL) sebagai analis data junior di minimarket fiktif Phi Minimart. SMK kelas X–XII, Pengembangan Perangkat Lunak dan Gim.">
+<title>Ngulik Data · Media Interaktif SQL – Analis Data Minimarket (Phi Minimart)</title>
+<meta name="description" content="Media Interaktif 1 · Querying Data: belajar query SQL (SELECT, ORDER BY, WHERE, IN, LIKE, IS NULL) sebagai analis data junior di minimarket fiktif Phi Minimart. SMK kelas X–XII, Pengembangan Perangkat Lunak dan Gim.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20x='3'%20y='3'%20width='58'%20height='58'%20rx='14'%20fill='%23ffd23f'%20stroke='%23141414'%20stroke-width='5'/%3E%3Ctext%20x='32'%20y='44'%20font-size='31'%20font-weight='900'%20text-anchor='middle'%20letter-spacing='-2'%20font-family='Segoe%20UI,Arial,sans-serif'%20fill='%23141414'%3ENd%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/lab.css">
 </head>
 <body>
 <div id="bingkai">
-  <div id="panggung" role="application" aria-label="Lab Maya SQL Phi Minimart">
+  <div id="panggung" role="application" aria-label="Media Interaktif SQL Phi Minimart">
 
     <!-- ============ Bilah atas ============ -->
     <header id="atas">
@@ -31,20 +31,13 @@
       <!-- ============ S01 · Laman Muka ============ -->
       <section class="layar" id="layar-muka" data-judul="Laman Muka">
         <div class="muka-kiri">
-          <span class="label">Lab Maya 1 · Querying Data</span>
-          <h1>Lab Maya SQL<br><em>Analis Data Minimarket</em></h1>
-          <p class="lead">Kamu jadi <b>analis data junior</b> di Phi Minimart. Ambil, urutkan, dan saring data minimarket pakai query SQL, satu perintah demi satu perintah.</p>
-          <dl class="kotak-info">
-            <div class="info-ubin" style="--warna: var(--langit)"><span class="info-ikon" aria-hidden="true">💻</span><dt>Bidang Keahlian</dt><dd>Teknologi Informasi</dd></div>
-            <div class="info-ubin" style="--warna: var(--mint)"><span class="info-ikon" aria-hidden="true">🧩</span><dt>Program Keahlian</dt><dd>Pengembangan Perangkat Lunak dan Gim <b>(PPLG)</b></dd></div>
-            <div class="info-ubin" style="--warna: var(--pink)"><span class="info-ikon" aria-hidden="true">🛠️</span><dt>Konsentrasi Keahlian</dt><dd>Rekayasa Perangkat Lunak <b>(RPL)</b></dd></div>
-            <div class="info-ubin" style="--warna: var(--kuning)"><span class="info-ikon" aria-hidden="true">🗄️</span><dt>Materi</dt><dd>Basis Data · <span id="infoMateri">Querying Data</span></dd></div>
-          </dl>
+          <span class="label">Media Interaktif 1 · Querying Data</span>
+          <h1>Media Interaktif SQL<br><em>Analis Data Minimarket</em></h1>
           <div class="baris">
             <button class="btn utama besar" id="btnMulai"><i data-ikon="main"></i>Gas, mulai!</button>
             <button class="btn besar" data-ke="panduan"><i data-ikon="buku"></i>Panduan</button>
           </div>
-          <p class="kredit">Pembuat: <b>Acep Rahmat</b> – SMK Wikrama Bogor · Dibuat dengan bantuan AI</p>
+          <p class="kredit">Dibuat dengan bantuan AI</p>
           <p class="catatan" id="infoProgres"></p>
         </div>
         <div class="muka-kanan" aria-hidden="true">
@@ -76,16 +69,16 @@
           <label>Nama lengkap <input id="masukNama" autocomplete="name" placeholder="mis. Andi Pratama" required></label>
           <label>Email <input id="masukEmail" type="email" autocomplete="email" placeholder="mis. andi@gmail.com" required></label>
           <label>Asal sekolah <input id="masukSekolah" autocomplete="organization" placeholder="mis. SMK Negeri 1 Bogor" required></label>
-          <label class="setuju" id="masukSetujuBaris"><input type="checkbox" id="masukSetuju"><span>Aku setuju nama, email, dan asal sekolahku dicatat oleh pengelola lab seperti dijelaskan di samping.</span></label>
+          <p class="setuju-info" id="masukSetujuBaris">Dengan menekan <b>Masuk</b>, nama, email, dan asal sekolahmu dicatat seperti dijelaskan di samping.</p>
           <div id="masukPesan" class="pesan bad" hidden></div>
           <button class="btn utama besar" type="submit"><i data-ikon="panah"></i>Masuk</button>
         </form>
         <aside class="kartu privasi">
           <h3>Tentang datamu</h3>
           <dl>
-            <dt>Yang diminta</dt><dd>Nama, email, dan asal sekolah. Tanpa nomor HP, tanpa password.</dd>
-            <dt>Untuk apa</dt><dd>Mengetahui siapa saja yang memakai lab ini dan sejauh mana progresnya (jumlah soal selesai, XP, level), supaya lab bisa terus dikembangkan.</dd>
-            <dt>Dicatat di mana</dt><dd id="privasiTujuan">Catatan pengguna milik pengelola lab (Google Sheets). Tidak dibagikan ke pihak lain dan tidak dipakai untuk iklan.</dd>
+            <dt>Yang diminta</dt><dd>Nama, email, dan asal sekolah.</dd>
+            <dt>Untuk apa</dt><dd>Mengetahui siapa saja yang memakai media ini dan sejauh mana progresnya (jumlah soal selesai, XP, level), supaya media ini bisa terus dikembangkan.</dd>
+            <dt>Dicatat di mana</dt><dd id="privasiTujuan">Catatan pengguna milik pengelola media (Google Sheets). Tidak dibagikan ke pihak lain dan tidak dipakai untuk iklan.</dd>
             <dt>Yang tidak dikirim</dt><dd>Jawaban, query, catatan, dan refleksimu tetap di perangkat ini.</dd>
           </dl>
           <p class="muted kecil" id="privasiKontak" hidden></p>
@@ -180,7 +173,7 @@
           <div><h2>Laporan Kerja Hari Ini</h2><p class="muted" id="ringkasanSub"></p></div>
           <div class="baris">
             <button class="btn" id="btnCetak"><i data-ikon="cetak"></i>Cetak ringkasan</button>
-            <button class="btn" id="btnUlangi"><i data-ikon="ulang"></i>Ulangi Lab</button>
+            <button class="btn" id="btnUlangi"><i data-ikon="ulang"></i>Ulangi dari awal</button>
             <button class="btn utama" data-ke="muka"><i data-ikon="rumah"></i>Laman Muka</button>
           </div>
         </div>
@@ -207,12 +200,12 @@
           <i style="--x:260px;--y:180px;--r:5deg;--d:2s;background:var(--langit)">ORDER BY</i>
         </span>
         <span class="wordmark besar" aria-hidden="true"><span>Ngulik</span><span class="wm-data">Data</span></span>
-        <span class="splash-lab" id="splashLab">Lab Maya SQL</span>
+        <span class="splash-lab" id="splashLab">Media Interaktif SQL</span>
         <p class="splash-tagline">Belajar SQL lewat 3 langkah:<br><b>👀 Amati · ✍️ Kerjakan · 💭 Renungkan</b></p>
         <div class="splash-bar" aria-hidden="true"><i></i></div>
         <p class="splash-status" id="splashStatus">Lagi nyiapin database Phi Minimart…</p>
       </div>
-      <p class="splash-kredit">Pembuat: Acep Rahmat – SMK Wikrama Bogor · Dibuat dengan bantuan AI</p>
+      <p class="splash-kredit">Dibuat dengan bantuan AI</p>
     </div>
   </div>
 </div>

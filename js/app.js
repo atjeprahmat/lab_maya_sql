@@ -166,11 +166,11 @@
     kotak.style.width = '600px'; kotak.innerHTML = '';
     kotak.append(el('b', {}, 'Pilih suara narasi'),
       daftar.length ? el('div', { class: 'daftar-suara' }, daftar.map(v => el('label', { class: 'pilihan-suara' },
-        el('input', { type: 'radio', name: 'suaraNarasi', checked: v === suaraId || null, onchange: () => { suaraId = v; tulis(KUNCI_SUARA, JSON.stringify(v.name)); ucapkan('Selamat datang di Lab Ngulik Data!', v); } }),
+        el('input', { type: 'radio', name: 'suaraNarasi', checked: v === suaraId || null, onchange: () => { suaraId = v; tulis(KUNCI_SUARA, JSON.stringify(v.name)); ucapkan('Selamat datang di Ngulik Data!', v); } }),
         el('span', { class: 'kat-teks' }, el('b', {}, v.name.replace(/ - Indonesian \(Indonesia\)/, '')), el('small', {}, jenis(v))),
-        el('button', { class: 'btn kecil', onclick: e => { e.preventDefault(); ucapkan('Selamat datang di Lab Ngulik Data!', v); } }, el('i', { 'data-ikon': 'main' }), 'Coba'))))
+        el('button', { class: 'btn kecil', onclick: e => { e.preventDefault(); ucapkan('Selamat datang di Ngulik Data!', v); } }, el('i', { 'data-ikon': 'main' }), 'Coba'))))
         : el('p', { class: 'muted' }, 'Browser ini tidak punya suara Bahasa Indonesia, jadi narasi hanya tampil sebagai teks.'),
-      el('p', { class: 'muted kecil' }, 'Tips: buka lab di Microsoft Edge untuk suara "Gadis" atau "Ardi" (Natural) yang paling alami. Di Chrome tersedia "Google Bahasa Indonesia".'),
+      el('p', { class: 'muted kecil' }, 'Tips: buka media ini di Microsoft Edge untuk suara "Gadis" atau "Ardi" (Natural) yang paling alami. Di Chrome tersedia "Google Bahasa Indonesia".'),
       el('div', { class: 'baris', style: { justifyContent: 'flex-end' } }, el('button', { class: 'btn utama', onclick: () => { speechSynthesis?.cancel(); tutup(); } }, 'Selesai')));
     d.hidden = false;
   };
@@ -257,7 +257,7 @@
     if (!/^(select|with)\b/i.test(bersih)) {
       const kata = bersih.split(/\s+/)[0];
       throw new Error(/^(insert|update|delete|replace|create|drop|alter|truncate|rename|set|use)$/i.test(kata)
-        ? 'Di lab ini cukup pakai SELECT buat membaca data, ya.'
+        ? 'Di media ini cukup pakai SELECT buat membaca data, ya.'
         : `Kata pertama "${kata}" belum dikenal. Query untuk membaca data diawali SELECT. Cek ejaannya, ya.`);
     }
     try { return qMurid(bersih); } catch (e) { throw new Error(Lab.galat(e.message)); }
@@ -404,27 +404,28 @@
   function tampilMasuk() {
     $('#masukPesan').hidden = true;
     for (const id of ['masukNama', 'masukEmail', 'masukSekolah']) $('#' + id).value = '';
-    $('#masukSetuju').checked = false;
-    // Persetujuan hanya diminta bila pencatatan aktif; bila tidak, data cuma tersimpan di perangkat ini.
+    // Pemberitahuan pencatatan hanya tampil bila pencatatan aktif; menekan Masuk berarti setuju dicatat. Bila tidak aktif, data cuma tersimpan di perangkat ini.
     const aktif = Lab.pencatatAktif();
     $('#masukSetujuBaris').hidden = !aktif;
     $('#privasiTujuan').textContent = aktif
-      ? `Catatan pengguna milik ${CFG.pengelola || 'pengelola lab'} (Google Sheets). Tidak dibagikan ke pihak lain dan tidak dipakai untuk iklan.`
+      ? `Catatan pengguna milik ${CFG.pengelola || 'pengelola media'} (Google Sheets). Tidak dibagikan ke pihak lain dan tidak dipakai untuk iklan.`
       : 'Saat ini pencatatan belum aktif: datamu hanya tersimpan di perangkat ini.';
     $('#privasiKontak').hidden = !CFG.kontak;
-    $('#privasiKontak').textContent = CFG.kontak ? `Mau datamu dihapus atau diperbaiki? Hubungi ${CFG.kontak}.` : '';
+    // kontak berupa link (mis. wa.me) jadi tautan; nomor wa.me/62… ditampilkan sebagai 0…
+    const wa = /wa\.me\/62(\d+)/.exec(CFG.kontak || ''), link = /^https?:\/\//.test(CFG.kontak || '');
+    $('#privasiKontak').replaceChildren(...(CFG.kontak ? ['Mau datamu dihapus atau diperbaiki? Hubungi ',
+      link ? el('a', { href: CFG.kontak, target: '_blank', rel: 'noopener' }, wa ? `WhatsApp 0${wa[1]}` : CFG.kontak) : CFG.kontak, '.'] : []));
     setTimeout(() => $('#masukNama').focus(), 50);
   }
   $('#formMasuk').onsubmit = e => {
     e.preventDefault();
     const nama = $('#masukNama').value.trim().replace(/\s+/g, ' '), email = $('#masukEmail').value.trim().toLowerCase();
-    const sekolah = $('#masukSekolah').value.trim().replace(/\s+/g, ' '), setuju = !Lab.pencatatAktif() || $('#masukSetuju').checked;
+    const sekolah = $('#masukSekolah').value.trim().replace(/\s+/g, ' ');
     const salah = nama.length < 3 ? 'Tulis nama lengkapmu dulu, ya.'
       : !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email) ? 'Email-nya belum valid, contoh: andi@gmail.com.'
-      : sekolah.length < 5 ? 'Tulis nama sekolahmu, mis. SMK Negeri 1 Bogor.'
-      : !setuju ? 'Centang persetujuan dulu, ya.' : '';
+      : sekolah.length < 5 ? 'Tulis nama sekolahmu, mis. SMK Negeri 1 Bogor.' : '';
     if (salah) { $('#masukPesan').textContent = salah; $('#masukPesan').hidden = false; Lab.sfx('salah'); return; }
-    Lab.masuk({ nama, email, sekolah, setuju: Lab.pencatatAktif() && setuju });
+    Lab.masuk({ nama, email, sekolah, setuju: Lab.pencatatAktif() });
     if (panduanTamu) { Lab.st.panduanDilihat = true; Lab.simpan(); }
     Lab.catat('masuk');
     Lab.sfx('sukses'); Lab.toast(`Halo, ${nama.split(' ')[0]}! 👋 Progresmu disimpan atas ${email}.`);
@@ -442,14 +443,8 @@
     const n = Lab.jumlahSelesai(), s = Lab.st.siswa, lanjut = Lab.st.terakhir || Lab.st.panduanDilihat;
     $('#infoProgres').textContent = s ? `Masuk sebagai ${s.nama} (${s.email}) · ${adaTiket ? `${n} dari 4 langkah · ` : ''}${Lab.xp?.() ?? 0} XP. Bukan kamu? Klik namamu di pojok kanan atas untuk keluar.` : '';
     $('#btnMulai').innerHTML = ''; $('#btnMulai').append(el('i', { 'data-ikon': 'main' }), s && lanjut ? 'Lanjut lagi' : 'Gas, mulai!');
-    // sambutan lengkap sekali per buka lab: sasaran kelas + isi kartu "Tentang lab ini" (dibaca dari halaman, singkatan dalam kurung dilewati).
-    // Browser baru mengizinkan suara setelah siswa mengeklik halaman, jadi sambutan lengkap baru "terpakai" setelah itu.
-    if (sambutanLengkap || navigator.userActivation?.hasBeenActive === false) { Lab.narasi('Selamat datang di Lab Ngulik Data!'); return; }
-    sambutanLengkap = true;
-    const info = $$('#layar-muka .info-ubin').map(u => `${u.querySelector('dt').textContent}: ${u.querySelector('dd').textContent.replace(/\s*\([^)]*\)/g, '')}.`).join(' ');
-    Lab.narasi(`Selamat datang di Lab Ngulik Data! Lab ini untuk belajar murid SMK kelas sepuluh, sebelas, dan dua belas. ${info}`);
+    Lab.narasi('Selamat datang di Ngulik Data, media interaktif belajar SQL!');
   }
-  let sambutanLengkap = false;
   $('#btnMulai').onclick = () => {
     Lab.sfx('klik');
     if (!Lab.st.terakhir) return Lab.ke(Lab.st.panduanDilihat ? 'peta' : 'briefing');
@@ -505,7 +500,7 @@
         + '<small>Lihat solusi sebelum jawabanmu benar? XP soal itu jadi <b>setengah</b>. Buka petunjuk dulu, ya!</small>'
         + '<b>Level naik tiap 50 XP</b>'
         + `<table class="xp-tabel">${jangkau}${lvMaks > 4 ? '<tr><td colspan="2">… dan seterusnya</td></tr>' : ''}</table>`
-        + `<small>${APP ? `Lab Maya ${APP.no} · ${APP.kategori}` : 'Lab ini'} punya <b>${ids.length} soal</b>: total <b>${maks} XP</b>, cukup untuk sampai <b>Level ${lvMaks}</b>.</small></span>` });
+        + `<small>${APP ? `Media Interaktif ${APP.no} · ${APP.kategori}` : 'Media ini'} punya <b>${ids.length} soal</b>: total <b>${maks} XP</b>, cukup untuk sampai <b>Level ${lvMaks}</b>.</small></span>` });
   }
   Lab.infoXp = infoXp;
   /** Panduan hal. 1: latihan mini yang meniru layar Aktivitas apa adanya (tidak dinilai, tidak menambah XP):
@@ -794,7 +789,7 @@
   ];
   Lab.kategori = KATEGORI;
   const iApp = APP ? KATEGORI.findIndex(k => k.nama === APP.kategori) : -1;   // kategori milik aplikasi ini
-  /** Nomor Lab Maya untuk kategori (dari js/aplikasi.js); kosong bila kategori belum dijadikan aplikasi. */
+  /** Nomor Media Interaktif untuk kategori (dari js/aplikasi.js); kosong bila kategori belum dijadikan aplikasi. */
   const noLab = k => Object.values(window.LAB_APLIKASI ?? {}).find(a => a.kategori === k.nama)?.no;
   let petaPilih = Math.max(0, iApp);
   function tampilPeta() {
@@ -827,14 +822,14 @@
       daftar.append(el('button', { class: 'kategori' + (i === petaPilih ? ' pilih' : '') + (i && !ids.length ? ' nanti' : ''), role: 'tab', 'aria-selected': String(i === petaPilih),
         style: { '--warna': k.warna }, onclick: () => { Lab.sfx('klik'); petaPilih = i; isiPeta(n); } },
         el('span', { class: 'kat-no' }, i + 1), el('span', { class: 'kat-teks' }, el('b', {}, k.nama),
-          el('small', {}, k.studi ? `Lab Maya ${noLab(k)} · materi + ${ids.length} soal` : noLab(k) ? `Lab Maya ${noLab(k)} · ${k.perintah.length} perintah` : `${k.perintah.length} perintah · segera hadir`)),
+          el('small', {}, k.studi ? `Media Interaktif ${noLab(k)} · materi + ${ids.length} soal` : noLab(k) ? `Media Interaktif ${noLab(k)} · ${k.perintah.length} perintah` : `${k.perintah.length} perintah · segera hadir`)),
         !i && adaTiket ? el('span', { class: 'chip ' + (n === 4 ? 'ok' : 'primer') }, `${n}/4`)
           : ids.length ? el('span', { class: 'chip ' + (sel === ids.length ? 'ok' : 'abu') }, `${sel}/${ids.length}`) : el('i', { 'data-ikon': 'gembok', title: 'Segera hadir' })));
     });
     const k = KATEGORI[petaPilih], ids = Lab.soalKategori(petaPilih), w = $('#petaDetail'); w.innerHTML = '';
     const xpKat = ids.reduce((a, id) => a + Lab.xpSoal(id), 0);
     w.append(el('header', { class: 'kat-kepala', style: { '--warna': k.warna } },
-      el('div', {}, el('span', { class: 'label' }, (noLab(k) ? `Lab Maya ${noLab(k)} · ` : '') + (k.studi ? 'Materi & soal gabungan' : 'Kategori')), el('h3', {}, k.nama)),
+      el('div', {}, el('span', { class: 'label' }, (noLab(k) ? `Media Interaktif ${noLab(k)} · ` : '') + (k.studi ? 'Materi & soal gabungan' : 'Kategori')), el('h3', {}, k.nama)),
       ids.length ? el('span', { class: 'chip ok' }, `${soalSelesai(ids)}/${ids.length} latihan · ${xpKat} XP`) : el('span', { class: 'chip abu' }, el('i', { 'data-ikon': 'gembok' }), 'Segera hadir')));
     const buka = id => () => { Lab.sfx('klik'); Lab.ke('latihan', { id }); };
     if (k.studi) {
@@ -1200,7 +1195,7 @@
     const daftarApp = Object.values(window.LAB_APLIKASI ?? {}), ini = APP ?? daftarApp[0], lanjut = daftarApp.find(a => a.no === (ini?.no ?? 0) + 1);
     kiri.append(el('div', { class: 'kartu profesi', id: 'ringkasanProfesi' }, el('h3', {}, 'Kemampuan ini di dunia kerja'),
       (ini?.profesi ?? []).map(([peran, teks]) => el('div', {}, el('b', {}, peran + ': '), teks)),
-      el('div', { class: 'muted' }, el('b', {}, 'Berikutnya: '), lanjut ? `Lab Maya ${lanjut.no} · ${lanjut.judul} (${lanjut.kategori}).` : 'Kamu sudah sampai di lab terakhir. Keren! 🎉')));
+      el('div', { class: 'muted' }, el('b', {}, 'Berikutnya: '), lanjut ? `Media Interaktif ${lanjut.no} · ${lanjut.judul} (${lanjut.kategori}).` : 'Kamu sudah sampai di aplikasi terakhir. Keren! 🎉')));
     if (adaTiket && n === 4) { Lab.sfx('fanfare'); Lab.narasi('Kerja bagus! Keempat tiket hari ini beres.'); }
   }
   $('#btnCetak').onclick = () => window.print();
@@ -1216,11 +1211,9 @@
   /** Teks Laman Muka, judul, dan Briefing menyesuaikan aplikasi aktif (lab lengkap memakai teks bawaan di index.html). */
   function terapkanAplikasi() {
     if (!APP || iApp < 0) return;
-    document.title = `Ngulik Data · Lab Maya SQL ${APP.no} – ${APP.judul}`;
-    $('#layar-muka .muka-kiri > .label').textContent = `Lab Maya ${APP.no} · ${APP.kategori}`;
+    document.title = `Ngulik Data · Media Interaktif SQL ${APP.no} – ${APP.judul}`;
+    $('#layar-muka .muka-kiri > .label').textContent = `Media Interaktif ${APP.no} · ${APP.kategori}`;
     $('#layar-muka h1 em').textContent = APP.judul;
-    $('#layar-muka .lead').innerHTML = APP.lead;
-    $('#infoMateri').textContent = APP.kategori;
     if (APP.monitor) $('.toko-monitor code').innerHTML = Lab.sorot(APP.monitor).replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;');
     if (adaTiket) return;
     const k = KATEGORI[iApp], ids = Lab.soalKategori(iApp);
@@ -1230,7 +1223,7 @@
   }
   Lab.mulai = async () => {
     const splash = $('#memuat'), t0 = performance.now();
-    if (APP) $('#splashLab').textContent = `Lab Maya ${APP.no} · ${APP.kategori}`;
+    if (APP) $('#splashLab').textContent = `Media Interaktif ${APP.no} · ${APP.kategori}`;
     try {
       await Lab.siapkanDb();
       terapkanAplikasi();

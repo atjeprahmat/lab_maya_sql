@@ -1,12 +1,12 @@
-# Lab Maya SQL – Analis Data Minimarket (Phi Minimart)
+# Media Interaktif SQL – Ngulik Data: Analis Data Minimarket (Phi Minimart)
 
-**Lab Maya 1 · Querying Data.** Lab Maya interaktif untuk murid SMK kelas X–XII (usia 15–17 tahun), Program Keahlian PPLG (Konsentrasi Rekayasa Perangkat Lunak, Basis Data).
+**Media Interaktif 1 · Querying Data.** Media pembelajaran interaktif untuk murid SMK kelas X–XII (usia 15–17 tahun), Program Keahlian PPLG (Konsentrasi Rekayasa Perangkat Lunak, Basis Data).
 Murid berperan sebagai **analis data junior** di minimarket fiktif Phi Minimart dan mengerjakan latihan per perintah dengan query SQL.
 
 ## Alur belajar (versi sekarang)
 
-1. **Splash screen** (±2 detik, klik untuk lewati) → **Laman Muka** dengan kartu "Tentang lab ini"; narator membacakan sambutan, sasaran kelas X–XII, dan isi kartu.
-2. **Isi data diri** (nama, email, asal sekolah + persetujuan) → **Briefing** singkat.
+1. **Splash screen** (±2 detik, klik untuk lewati) → **Laman Muka**; narator membacakan sambutan singkat "Selamat datang di Ngulik Data, media interaktif belajar SQL!".
+2. **Isi data diri** (nama, email, asal sekolah; menekan Masuk = setuju dicatat, tanpa kotak centang) → **Briefing** singkat.
 3. **Panduan**: latihan mini satu soal (tidak dinilai) yang meniru layar Aktivitas; yang harus dikerjakan disorot bingkai pink dan dibacakan narator.
    Tombol "⭐ Cara hitung XP & Level" menjelaskan XP (Dasar +10, Menengah +20, Lanjut +30; lihat solusi dulu = setengah) dan level (naik tiap 50 XP).
 4. **Peta Aktivitas**: kartu perintah (SELECT FROM, ORDER BY, WHERE, …) dengan level dan XP.
@@ -25,7 +25,7 @@ Urutan materi mengikuti bab *Querying Data* (SELECT, ORDER BY, WHERE, saringan l
 | 3 dari 4 | Menyaring (WHERE, AND/OR) | Transaksi cabang Tajur dengan minimal 4 barang (13 dari 180) |
 | 4 dari 4 | Menyaring lanjut (IS NULL, IN, BETWEEN, LIKE, DISTINCT) | Karyawan yang nama belakangnya belum diisi (2 dari 13) |
 
-JOIN dan GROUP BY disiapkan untuk Lab Maya 2 dan 3. Kode lamanya disimpan di `cadangan/` (tidak dimuat dan tidak perlu diunggah).
+JOIN dan GROUP BY ada di Media Interaktif 2 dan 3. Kode lamanya disimpan di `cadangan/` (tidak dimuat dan tidak perlu diunggah).
 
 Setiap langkah punya 6 tahap yang mengikuti **3 pengalaman belajar Pembelajaran Mendalam (3M)**:
 **Memahami** (Baca tiket → Rakit query → Jalankan & amati → Bandingkan) → **Mengaplikasi** (Terapkan: tulis query sendiri untuk soal penerapan)
@@ -41,15 +41,15 @@ Ada juga **Laporan Kerja** (ringkasan, refleksi, dan cetak). **Mode Bebas** (lab
 
 - HTML, CSS, dan JavaScript murni, tanpa framework dan tanpa CDN. Semua aset ada di folder ini.
 - SQL dijalankan di browser memakai **SQLite (sql.js 1.12.0, lisensi MIT)**, lihat `vendor/LICENSE-sql.js.txt`.
-  File WebAssembly ditanam sebagai base64 (`vendor/sql-wasm-bin.js`) agar lab tetap berjalan saat dibuka dari `file://`.
+  File WebAssembly ditanam sebagai base64 (`vendor/sql-wasm-bin.js`) agar media tetap berjalan saat dibuka dari `file://`.
 - **Responsif.** Di laptop/PC/tablet mendatar, panggung (minimal 1280×720) melebar atau meninggi mengikuti rasio layar
   lalu diskalakan, sehingga tidak ada garis hitam di tepi (16:9, 16:10, 4:3, ultrawide). Di HP (tegak maupun mendatar)
-  dan tablet tegak, lab memakai **mode HP**: kolom bertumpuk, halaman bisa di-scroll, menu dan kategori bisa digeser,
+  dan tablet tegak, media memakai **mode HP**: kolom bertumpuk, halaman bisa di-scroll, menu dan kategori bisa digeser,
   tabel hasil tetap punya scroll sendiri. Diuji dari lebar 320 px sampai 2560 px.
 - Murid **mengisi nama, email, dan asal sekolah** (tanpa password). Progres, rakitan, jawaban, XP, dan refleksi disimpan di
   `localStorage` **terpisah per email**, jadi satu komputer bisa dipakai bergantian. Laporan Kerja memuat identitas dan rekap latihan.
 - **Pencatatan pengguna (opsional):** isi `urlPencatat` di `js/config.js` dengan URL Google Apps Script (lihat `pencatat/PANDUAN.md`)
-  agar nama, email, asal sekolah, dan angka progres tercatat di Google Sheets pengelola. Murid harus mencentang persetujuan;
+  agar nama, email, asal sekolah, dan angka progres tercatat di Google Sheets pengelola. Tidak ada kotak centang: pemberitahuan di atas tombol Masuk menjelaskan bahwa menekan Masuk berarti data dicatat;
   jawaban & query tidak dikirim. Bila offline, catatan diantrekan dan dikirim saat online. Kosong = tidak ada data yang keluar dari perangkat.
 - Suara: efek suara dibuat dengan Web Audio. Narasi memakai suara Bahasa Indonesia bawaan perangkat (Web Speech API) bila
   tersedia; bila tidak, narasi hanya tampil sebagai teks. Tombol **Suara** mematikan keduanya.
@@ -64,10 +64,10 @@ Ada juga **Laporan Kerja** (ringkasan, refleksi, dan cetak). **Mode Bebas** (lab
 | `css/lab.css` | Tampilan, sistem warna alat, animasi |
 | `js/app.js` | Inti: skala panggung, progres, suara, mesin SQL, penilai, navigasi, kerangka 5 tahap |
 | `js/langkah.js` | Isi 4 percobaan: tiket, alat rakit, visualisasi, skenario pembanding, simulasi, soal |
-| `cadangan/` | Kode JOIN dan GROUP BY untuk Lab Maya berikutnya (tidak dimuat) |
+| `cadangan/` | Kode JOIN dan GROUP BY untuk Media Interaktif berikutnya (tidak dimuat) |
 | `js/data.js` | Data fiktif Phi Minimart: 8 tabel + tabel bantu `daftar_harga` |
 | `js/config.js` | Pengaturan pengelola: URL pencatat Google Sheets dan kontak untuk permintaan hapus data |
-| `pencatat/` | Skrip Google Apps Script penerima data pengguna + panduan pemasangan (tidak perlu diunggah bersama lab) |
+| `pencatat/` | Skrip Google Apps Script penerima data pengguna + panduan pemasangan (tidak perlu diunggah bersama media) |
 | `js/latihan.js` | Layar latihan per perintah dan Studi Kasus: soal, hint bertahap, XP, penilaian |
 | `js/latihan-data.js` | Materi & soal dari `materi_soal/` (dibangkitkan, jangan diedit langsung) |
 | `js/latihan-3m.js` | Isi 3M tiap latihan: contoh query + pertanyaan amati (Memahami) dan pertanyaan reflektif (Merefleksi). Boleh disunting |
@@ -105,7 +105,7 @@ Level naik setiap 50 XP.
 
 ## Membangun aplikasi terpisah (satu per kategori)
 
-Lab ini bisa dipecah menjadi beberapa aplikasi yang lebih singkat, masing-masing satu kategori (daftar di `js/aplikasi.js`):
+Media ini bisa dipecah menjadi beberapa aplikasi yang lebih singkat, masing-masing satu kategori (daftar di `js/aplikasi.js`):
 
 | No | Aplikasi | Isi |
 |---|---|---|
@@ -126,4 +126,5 @@ Hasilnya ada di `dist/`: satu folder per aplikasi (buka `index.html`-nya) dan sa
 Setiap aplikasi punya Laman Muka, tujuan pembelajaran, progres (localStorage), dan sheet pencatat sendiri.
 Semua aplikasi memakai kode yang sama: perbaiki di folder utama, lalu jalankan perintah di atas lagi.
 Pengaturan `urlPencatat`, `pengelola`, dan `kontak` di `js/config.js` ikut terbawa ke setiap aplikasi.
-Folder utama sendiri tetap menjadi **lab lengkap** (semua kategori dalam satu aplikasi).
+Folder utama sendiri tetap menjadi **versi lengkap** (semua kategori dalam satu aplikasi).
+Hasil bangun bernama `media-interaktif-sql-NN-<id>` (folder dan .zip). Nama folder proyek dan sheet pencatat sengaja tidak diganti.
